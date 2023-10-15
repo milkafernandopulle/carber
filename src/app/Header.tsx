@@ -13,6 +13,9 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { UserButton } from "@clerk/nextjs";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 const currencies = ["CAD", "USD", "AUD", "EUR", "GBP"];
 const navigation = {
@@ -145,7 +148,8 @@ const perks = [
   },
 ];
 
-export default function Header() {
+type HeaderProps = React.PropsWithChildren<{}>;
+export default function Header({ children: UserSignInBox }: HeaderProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -157,7 +161,7 @@ export default function Header() {
             <div className="flex h-16 items-center justify-between">
               {/* Logo (lg+) */}
               <div className="hidden lg:flex lg:flex-1 lg:items-center">
-                <a href="#">
+                <a href="/">
                   <span className="sr-only">Your Company</span>
                   <img className="h-8 w-auto" src="/logo.svg" alt="" />
                 </a>
@@ -289,40 +293,7 @@ export default function Header() {
                 />
               </a>
 
-              <div className="flex flex-1 items-center justify-end">
-                <a
-                  href="#"
-                  className="hidden text-sm font-medium text-gray-700 hover:text-gray-800 lg:block">
-                  Search
-                </a>
-
-                <div className="flex items-center lg:ml-8">
-                  {/* Help */}
-                  <a href="#" className="p-2 text-gray-400 hover:text-gray-500 lg:hidden">
-                    <span className="sr-only">Login</span>
-                    <QuestionMarkCircleIcon className="h-6 w-6" aria-hidden="true" />
-                  </a>
-                  <a
-                    href="#"
-                    className="hidden text-sm font-medium text-gray-700 hover:text-gray-800 lg:block">
-                    Login
-                  </a>
-
-                  {/* Cart */}
-                  <div className="ml-4 flow-root lg:ml-8">
-                    <a href="#" className="group -m-2 flex items-center p-2">
-                      <ShoppingBagIcon
-                        className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                        aria-hidden="true"
-                      />
-                      <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                        0
-                      </span>
-                      <span className="sr-only">items in cart, view bag</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
+              <div className="flex flex-1 items-center justify-end space-x-2">{UserSignInBox}</div>
             </div>
           </div>
         </div>

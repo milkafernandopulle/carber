@@ -4,7 +4,7 @@
  
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 210deg 20% 98.04%;
     --foreground: 240 10% 3.9%;
 
     --card: 0 0% 100%;
@@ -73,4 +73,11 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.cl-internal-b3fm6y {
+  display: none !important;
+}
+.cl-userButtonPopoverFooter {
+  display: none !important;
 }
