@@ -168,7 +168,7 @@ export default function Header({ children: UserSignInBox }: HeaderProps) {
 
               <div className="hidden h-full lg:grid">
                 <div className="grid place-items-center h-full justify-center space-x-8">
-                  <Link className={buttonVariants()} href="/list">
+                  <Link className={buttonVariants()} href="/list-new">
                     List My Car
                   </Link>
                 </div>

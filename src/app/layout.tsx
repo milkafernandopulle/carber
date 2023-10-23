@@ -3,7 +3,11 @@ import { Inter } from "next/font/google";
 import Header from "./Header";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import UserSignInBox from "@/components/molecules/UserSignInBox";
+import dynamic from "next/dynamic";
+
+const UserSignInBox = dynamic(() => import("@/components/molecules/UserSignInBox"), {
+  ssr: false,
+});
 
 const inter = Inter({ subsets: ["latin"] });
 

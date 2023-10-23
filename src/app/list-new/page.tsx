@@ -10,7 +10,7 @@ import CreateListing from "@/components/organisms/CreateListing";
 
 export default function Page() {
   return (
-    <main className="py-24">
+    <main className="py-16">
       <div className="mx-auto max-w-7xl sm:px-2 lg:px-8">
         <div className="mx-auto max-w-2xl px-4 lg:max-w-4xl lg:px-0">
           <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
@@ -21,14 +21,10 @@ export default function Page() {
           </p>
         </div>
       </div>
-      <section aria-labelledby="recent-heading" className="mt-16">
+      <section aria-labelledby="recent-heading" className="mt-8">
         <div className="mx-auto max-w-7xl sm:px-2 lg:px-8">
           <div className="mx-auto max-w-2xl space-y-8 sm:px-4 lg:max-w-4xl lg:px-0">
-            <div className="border-b border-t border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border">
-              <div className="flex items-center border-b border-gray-200 p-4 sm:grid sm:grid-cols-4 sm:gap-x-6 sm:p-6">
-                <CreateListing />
-              </div>
-            </div>
+            <CreateListing />
           </div>
         </div>
       </section>
