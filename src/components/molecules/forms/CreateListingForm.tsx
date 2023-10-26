@@ -74,7 +74,6 @@ type CreateListingFormProps = {
 };
 export default function CreateListingForm({ onSubmit }: CreateListingFormProps) {
   const defaults = getDefaultValues();
-  console.log("defaults", defaults);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -162,7 +161,9 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
             <Button variant="ghost" type="button">
               Cancel
             </Button>
-            <Button type="submit">Save</Button>
+            <Button disabled={form.formState.isSubmitting} type="submit">
+              Save
+            </Button>
           </div>
         </div>
       </form>

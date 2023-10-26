@@ -2,6 +2,7 @@
 import { auth } from "@clerk/nextjs";
 
 import prisma from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
 import { Vehicle } from "@prisma/client";
 
@@ -21,5 +22,5 @@ export async function createListing(
     },
   });
 
-  console.log(result);
+  redirect(`/vehicles/${result.id}`);
 }

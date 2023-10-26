@@ -2,11 +2,12 @@
 
 import CreateListingForm from "@/components/molecules/forms/CreateListingForm";
 import { createListing } from "./actions";
+import { redirect } from "next/navigation";
 
 type CreateListingProps = {};
 export default function CreateListing({}: CreateListingProps) {
-  function handleOnSubmit(values: any) {
-    createListing(values);
+  async function handleOnSubmit(values: any) {
+    await createListing(values);
   }
 
   return (
