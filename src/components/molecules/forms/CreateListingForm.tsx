@@ -363,13 +363,15 @@ const FuelTypes = ["Petrol", "Diesel"] as const;
 const TransmissionTypes = ["Auto", "Manual"] as const;
 
 const VehicleTypes = [
+  "Compact",
   "Coupe",
   "Convertible",
+  "CrossOver",
   "Hatchback",
   "Sedan",
   "SUV",
   "Wagon",
-  "Other",
+  "Van",
 ] as const;
 
 const SeatCountTypes = [2, 4, 5, 6, 7] as const;

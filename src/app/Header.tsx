@@ -153,7 +153,7 @@ export default function Header({ children: UserSignInBox }: HeaderProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 shadow">
+    <header className="sticky top-0 shadow bg-white z-10">
       <nav aria-label="Top">
         {/* Secondary navigation */}
         <div className="bg-white">

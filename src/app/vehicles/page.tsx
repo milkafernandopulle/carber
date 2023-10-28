@@ -77,7 +77,7 @@ function getVehicleList() {
       ownerId: userId,
     },
     include: {
-      VehicleAvailability: true,
+      availabilities: true,
     },
   });
 }
@@ -94,7 +94,7 @@ export default async function Page({}: PageProps) {
           <p className="mt-2 text-sm text-gray-500">Manage your vehicles and view their status.</p>
         </div>
       </div>
-      <div className="mx-auto max-w-2xl space-y-8 sm:px-4 lg:max-w-4xl lg:px-0">
+      <div className="mx-auto max-w-2xl space-y-8 sm:px-4 lg:max-w-4xl lg:px-0 mb-12">
         <ul
           role="list"
           className="divide-y divide-gray-100 overflow-hidden bg-white shadow ring-1 ring-gray-900/5 sm:rounded-xl">
