@@ -162,7 +162,7 @@ export default function Header({ children: UserSignInBox }: HeaderProps) {
               <div className="hidden lg:flex lg:flex-1 lg:items-center">
                 <a href="/">
                   <span className="sr-only">Your Company</span>
-                  <img className="h-8 w-auto" src="/logo.svg" alt="" />
+                  <img className="h-14 w-auto" src="/logo.png" alt="" />
                 </a>
               </div>
 

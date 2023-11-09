@@ -22,6 +22,7 @@ import {
 import { Path, useForm } from "react-hook-form";
 import { faker } from "@faker-js/faker";
 import { Button } from "@/components/ui/button";
+import FileUploadInput from "@/components/atoms/forms/FileUploadInput";
 
 const formSchema = z.object({
   make: z.string(),
@@ -48,6 +49,7 @@ const formSchema = z.object({
     .max(1000000, {
       message: "Allowed milage must be less than 1000000KM",
     }),
+  images: z.array(z.string()),
 });
 
 function getDefaultValues() {
@@ -79,6 +81,8 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
     resolver: zodResolver(formSchema),
     defaultValues: defaults,
   });
+
+  // console.log(form.watch("images"));
 
   return (
     <Form {...form}>
@@ -152,6 +156,13 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                     name="allowedMilage"
                     label="Allowed Milage(KM)"
                     placeholder="Enter allowed milage"
+                  />
+                </div>
+                <div className="sm:col-span-6">
+                  <FileUploadFormField
+                    uploadUrl="/list-new/image-upload"
+                    name="images"
+                    label="Upload Photos"
                   />
                 </div>
               </div>
@@ -231,6 +242,37 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                 value={field.value}
                 onChange={field.onChange}
                 placeholder={placeholder}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    );
+  }
+  function FileUploadFormField({
+    name,
+    label,
+    uploadUrl,
+  }: {
+    name: Path<z.infer<typeof formSchema>>;
+    label: string;
+    uploadUrl: string;
+  }) {
+    return (
+      <FormField
+        control={form.control}
+        name={name}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{label}</FormLabel>
+            <FormControl>
+              <FileUploadInput
+                uploadUrl={uploadUrl}
+                name={name}
+                label=""
+                value={field.value}
+                onChange={field.onChange}
               />
             </FormControl>
             <FormMessage />

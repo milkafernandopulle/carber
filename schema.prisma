@@ -25,6 +25,7 @@ model Vehicle {
     published      Boolean               @default(false)
     ownerId        String
     availabilities VehicleAvailability[]
+    images         String[]
 }
 
 model VehicleAvailability {
