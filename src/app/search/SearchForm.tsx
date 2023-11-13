@@ -24,6 +24,7 @@ import { faker } from "@faker-js/faker";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Card, CardContent } from "@/components/ui/card";
 
 const formSchema = z.object({
   make: z.string().optional(),
@@ -117,46 +118,50 @@ export default function SearchForm({ searchMetaData }: SearchFormProps) {
   return (
     <>
       <Form {...form}>
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-          <div className="sm:col-span-1">
-            <SelectFormField items={makes || []} label="Make" name="make" placeholder="" />
-          </div>
-          <div className="sm:col-span-1">
-            <SelectFormField items={models || []} label="Model" name="model" placeholder="" />
-          </div>
-          <div className="sm:col-span-1">
-            <SelectFormField
-              items={searchMetaData.year || []}
-              label="Year"
-              name="year"
-              placeholder=""
-            />
-          </div>
-          <div className="sm:col-span-1">
-            <SelectFormField
-              items={searchMetaData.transmission || []}
-              label="Transmission"
-              name="transmission"
-              placeholder=""
-            />
-          </div>
-          <div className="sm:col-span-1">
-            <SelectFormField
-              items={searchMetaData.vehicleType || []}
-              label="Body Type"
-              name="vehicleType"
-              placeholder=""
-            />
-          </div>
-          <div className="sm:col-span-1">
-            <SelectFormField
-              items={searchMetaData.seats || []}
-              label="Seats"
-              name="seats"
-              placeholder=""
-            />
-          </div>
-        </div>
+        <Card>
+          <CardContent>
+            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+              <div className="sm:col-span-1">
+                <SelectFormField items={makes || []} label="Make" name="make" placeholder="" />
+              </div>
+              <div className="sm:col-span-1">
+                <SelectFormField items={models || []} label="Model" name="model" placeholder="" />
+              </div>
+              <div className="sm:col-span-1">
+                <SelectFormField
+                  items={searchMetaData.year || []}
+                  label="Year"
+                  name="year"
+                  placeholder=""
+                />
+              </div>
+              <div className="sm:col-span-1">
+                <SelectFormField
+                  items={searchMetaData.transmission || []}
+                  label="Transmission"
+                  name="transmission"
+                  placeholder=""
+                />
+              </div>
+              <div className="sm:col-span-1">
+                <SelectFormField
+                  items={searchMetaData.vehicleType || []}
+                  label="Body Type"
+                  name="vehicleType"
+                  placeholder=""
+                />
+              </div>
+              <div className="sm:col-span-1">
+                <SelectFormField
+                  items={searchMetaData.seats || []}
+                  label="Seats"
+                  name="seats"
+                  placeholder=""
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </Form>
     </>
   );

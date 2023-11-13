@@ -156,6 +156,7 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                     name="allowedMilage"
                     label="Allowed Milage(KM)"
                     placeholder="Enter allowed milage"
+                    type="number"
                   />
                 </div>
                 <div className="sm:col-span-6">
@@ -224,10 +225,12 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
     name,
     label,
     placeholder,
+    type = "text",
   }: {
     name: Path<z.infer<typeof formSchema>>;
     label: string;
     placeholder: string;
+    type?: string;
   }) {
     return (
       <FormField
@@ -238,7 +241,7 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
             <FormLabel>{label}</FormLabel>
             <FormControl>
               <Input
-                type="text"
+                type={type}
                 value={field.value}
                 onChange={field.onChange}
                 placeholder={placeholder}

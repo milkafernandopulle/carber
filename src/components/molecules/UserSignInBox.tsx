@@ -23,7 +23,10 @@ export default async function UserSignInBox({}: UserSignInBoxProps) {
 
   return (
     <>
-      <UserButton afterSignOutUrl="/" signInUrl="/sign-in" />
+      <div className="flex flex-row items-center gap-2">
+        <span>Hi, {user.firstName}</span>
+        <UserButton afterSignOutUrl="/" signInUrl="/sign-in" />
+      </div>
     </>
   );
 }

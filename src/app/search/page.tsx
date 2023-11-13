@@ -4,6 +4,7 @@ import { Prisma, Vehicle } from "@prisma/client";
 
 import * as lodash from "lodash";
 import SearchResults from "./SearchResults";
+import { parse } from "date-fns";
 
 async function getSearchMetaData() {
   const [makeAndModel, year, transmission, seats, vehicleType] = await Promise.all(
@@ -32,20 +33,79 @@ async function getSearchMetaData() {
   };
 }
 
-async function getSearchResults(searchQuery: Partial<Vehicle>) {
+type VehicleSearchQuery = Omit<Partial<Vehicle>, "images">;
+type AvailabilitySearchQuery = {
+  startDate: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
+};
+
+type SearchQuery = VehicleSearchQuery & AvailabilitySearchQuery;
+async function getSearchResults(searchQuery: SearchQuery) {
+  const availabilityQueryKeys = ["startDate", "endDate", "startTime", "endTime"];
+  const vehicleQueryKeys = [
+    "make",
+    "model",
+    "fuel",
+    "transmission",
+    "vehicleType",
+    "seats",
+    "engine",
+    "color",
+    "allowedMilage",
+    "year",
+    "published",
+  ];
   const refinedSearchQuery = lodash.pickBy(searchQuery, (value) => !!value);
 
-  if (refinedSearchQuery.year) {
-    refinedSearchQuery.year = parseInt(refinedSearchQuery.year as string);
+  const availabilityQuery = lodash.pick(
+    searchQuery,
+    ...availabilityQueryKeys
+  ) as AvailabilitySearchQuery;
+  const vehicleQuery = lodash.pick(searchQuery, ...vehicleQueryKeys) as VehicleSearchQuery;
+
+  if (vehicleQuery.year) {
+    vehicleQuery.year = parseInt(vehicleQuery.year as unknown as string);
   }
 
-  if (refinedSearchQuery.seats) {
-    refinedSearchQuery.seats = parseInt(refinedSearchQuery.seats as string);
+  if (vehicleQuery.seats) {
+    vehicleQuery.seats = parseInt(vehicleQuery.seats as unknown as string);
   }
+
+  let lte = parse(
+    availabilityQuery.startDate + " " + availabilityQuery.startTime,
+    "yyyy-MM-dd hh.mmaa",
+    new Date()
+  );
+
+  let gte = parse(
+    availabilityQuery.endDate + " " + availabilityQuery.endTime,
+    "yyyy-MM-dd hh.mmaa",
+    new Date()
+  );
+
+  let availabilities = {
+    some: {
+      AND: [
+        {
+          from: {
+            lte,
+          },
+        },
+        {
+          to: {
+            gte,
+          },
+        },
+      ],
+    },
+  };
 
   const results = await prisma.vehicle.findMany({
     where: {
-      ...refinedSearchQuery,
+      ...vehicleQuery,
+      availabilities,
     },
   });
 
