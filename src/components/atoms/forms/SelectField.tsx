@@ -43,7 +43,7 @@ const SelectField = <FieldsType extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className="block">{label}</FormLabel>
           <FormControl>
             <Select {...inputProps} value={field.value} onValueChange={field.onChange}>
               <SelectTrigger className="w-full">

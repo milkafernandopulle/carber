@@ -25,8 +25,15 @@ import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
+import DatePickerField from "@/components/atoms/forms/DatePickerField";
+import SelectField from "@/components/atoms/forms/SelectField";
+import { addDays, format, parse } from "date-fns";
 
 const formSchema = z.object({
+  startDate: z.date(),
+  startTime: z.string(),
+  endDate: z.date(),
+  endTime: z.string(),
   make: z.string().optional(),
   model: z.string().optional(),
   fuel: z.string().optional(),
@@ -64,6 +71,10 @@ export default function SearchForm({ searchMetaData }: SearchFormProps) {
   useEffect(() => {
     const subscription = watch((values) => {
       onSubmit({
+        startDate: values.startDate || new Date(),
+        startTime: values.startTime || "10.00AM",
+        endDate: values.endDate || new Date(),
+        endTime: values.endTime || "10.00AM",
         make: values.make === "-" ? undefined : values.make,
         model: values.model === "-" ? undefined : values.model,
         year: values.year?.toString() === "-" ? undefined : values.year,
@@ -119,8 +130,37 @@ export default function SearchForm({ searchMetaData }: SearchFormProps) {
     <>
       <Form {...form}>
         <Card>
-          <CardContent>
-            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          <CardContent className="py-6 px-6">
+            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 border-b border-black/10 pb-6">
+              <div className="sm:col-span-2">
+                <DatePickerField
+                  control={form.control}
+                  label="Start Date"
+                  name="startDate"
+                  placeholder=""
+                />
+              </div>
+              <div className="sm:col-span-1">
+                <SelectField
+                  items={times}
+                  control={form.control}
+                  label="Start Time"
+                  name="startTime"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <DatePickerField
+                  control={form.control}
+                  label="End Date"
+                  name="endDate"
+                  placeholder=""
+                />
+              </div>
+              <div className="sm:col-span-1">
+                <SelectField items={times} control={form.control} label="End Time" name="endTime" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6  pt-4">
               <div className="sm:col-span-1">
                 <SelectFormField items={makes || []} label="Make" name="make" placeholder="" />
               </div>
@@ -171,7 +211,16 @@ function useSearch() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  const startDateParam = searchParams.get("startDate");
+  const endDateParam = searchParams.get("endDate");
+
   const search = {
+    startDate: startDateParam
+      ? parse(startDateParam, "yyyy-MM-dd", new Date())
+      : addDays(new Date(), 1),
+    startTime: searchParams.get("startTime") || "10.00AM",
+    endDate: endDateParam ? parse(endDateParam, "yyyy-MM-dd", new Date()) : addDays(new Date(), 1),
+    endTime: searchParams.get("endTime") || "10.00AM",
     make: searchParams.get("make") || "-",
     model: searchParams.get("model") || "-",
     fuel: searchParams.get("fuel") || "-",
@@ -182,25 +231,80 @@ function useSearch() {
   } as FormSchema;
 
   const onSubmit = (values: FormSchema) => {
+    const formattedValues = {
+      startDate: format(values.startDate, "yyyy-MM-dd"),
+      startTime: searchParams.get("startTime") || "10.00AM",
+      endDate: format(values.endDate, "yyyy-MM-dd"),
+      endTime: searchParams.get("endTime") || "10.00AM",
+      make: values.make || "",
+      model: values.model || "",
+      fuel: values.fuel || "",
+      transmission: values.transmission || "",
+      vehicleType: values.vehicleType || "",
+      seats: values.seats?.toString() || "",
+      year: values.year?.toString() || "",
+    };
     const params = new URLSearchParams(
-      Object.keys({
-        make: values.make || "",
-        model: values.model || "",
-        fuel: values.fuel || "",
-        transmission: values.transmission || "",
-        vehicleType: values.vehicleType || "",
-        seats: values.seats?.toString() || "",
-        year: values.year?.toString() || "",
-      }).reduce((acc: any, cur: any) => {
-        if (values[cur as keyof FormSchema]) {
-          acc[cur] = values[cur as keyof FormSchema];
+      Object.keys(formattedValues).reduce((acc: any, cur: any) => {
+        if (formattedValues[cur as keyof FormSchema]) {
+          acc[cur] = formattedValues[cur as keyof FormSchema];
         }
         return acc;
       }, {})
     );
-
     router.push("/search?" + params.toString());
   };
 
   return { search, onSubmit };
 }
+
+const times = [
+  "12.00AM",
+  "12.30AM",
+  "01.00AM",
+  "01.30AM",
+  "02.00AM",
+  "02.30AM",
+  "03.00AM",
+  "03.30AM",
+  "04.00AM",
+  "04.30AM",
+  "05.00AM",
+  "05.30AM",
+  "06.00AM",
+  "06.30AM",
+  "07.00AM",
+  "07.30AM",
+  "08.00AM",
+  "08.30AM",
+  "09.00AM",
+  "09.30AM",
+  "10.00AM",
+  "10.30AM",
+  "11.00AM",
+  "11.30AM",
+  "12.00PM",
+  "12.30PM",
+  "01.00PM",
+  "01.30PM",
+  "02.00PM",
+  "02.30PM",
+  "03.00PM",
+  "03.30PM",
+  "04.00PM",
+  "04.30PM",
+  "05.00PM",
+  "05.30PM",
+  "06.00PM",
+  "06.30PM",
+  "07.00PM",
+  "07.30PM",
+  "08.00PM",
+  "08.30PM",
+  "09.00PM",
+  "09.30PM",
+  "10.00PM",
+  "10.30PM",
+  "11.00PM",
+  "11.30PM",
+];

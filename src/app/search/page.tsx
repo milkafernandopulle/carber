@@ -4,7 +4,8 @@ import { Prisma, Vehicle } from "@prisma/client";
 
 import * as lodash from "lodash";
 import SearchResults from "./SearchResults";
-import { parse } from "date-fns";
+import { addDays, format, parse } from "date-fns";
+import { redirect } from "next/navigation";
 
 async function getSearchMetaData() {
   const [makeAndModel, year, transmission, seats, vehicleType] = await Promise.all(
@@ -57,13 +58,34 @@ async function getSearchResults(searchQuery: SearchQuery) {
     "year",
     "published",
   ];
+
   const refinedSearchQuery = lodash.pickBy(searchQuery, (value) => !!value);
 
   const availabilityQuery = lodash.pick(
-    searchQuery,
+    refinedSearchQuery,
     ...availabilityQueryKeys
   ) as AvailabilitySearchQuery;
-  const vehicleQuery = lodash.pick(searchQuery, ...vehicleQueryKeys) as VehicleSearchQuery;
+
+  if (
+    !availabilityQuery.startDate ||
+    !availabilityQuery.startTime ||
+    !availabilityQuery.endDate ||
+    !availabilityQuery.endTime
+  ) {
+    const start = addDays(new Date(), 1);
+    const end = addDays(new Date(), 2);
+
+    const params = new URLSearchParams({
+      startDate: format(start, "yyyy-MM-dd"),
+      startTime: "10.00AM",
+      endDate: format(end, "yyyy-MM-dd"),
+      endTime: "10.00AM",
+    });
+
+    redirect("/search?" + params.toString());
+  }
+
+  const vehicleQuery = lodash.pick(refinedSearchQuery, ...vehicleQueryKeys) as VehicleSearchQuery;
 
   if (vehicleQuery.year) {
     vehicleQuery.year = parseInt(vehicleQuery.year as unknown as string);
@@ -118,7 +140,7 @@ type PageProps = {
 export default async function Page({ searchParams }: PageProps) {
   const searchMetaData = await getSearchMetaData();
 
-  const results = await getSearchResults(searchParams);
+  const results = await getSearchResults(searchParams as unknown as SearchQuery);
 
   return (
     <>

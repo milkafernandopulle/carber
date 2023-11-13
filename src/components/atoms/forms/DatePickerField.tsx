@@ -44,7 +44,7 @@ const DatePickerField = <FieldsType extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className="block">{label}</FormLabel>
           <FormControl>
             <DatePicker
               {...inputProps}

@@ -17,12 +17,6 @@ export interface DatePickerProps
 
 const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
   ({ className, value: date, onChange, ...props }, ref) => {
-    // useEffect(() => {
-    //   if (value) {
-    //     setDate(value as unknown as Date);
-    //   }
-    // }, [value]);
-    console.log(date);
     const handleOnSelect = (date?: Date) => {
       if (onChange) {
         onChange({
@@ -39,7 +33,7 @@ const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           <Button
             variant={"outline"}
             className={cn(
-              "w-[280px] justify-start text-left font-normal",
+              "w-full justify-start text-left font-normal",
               !date && "text-muted-foreground"
             )}>
             <CalendarDaysIcon className="mr-2 h-4 w-4" />

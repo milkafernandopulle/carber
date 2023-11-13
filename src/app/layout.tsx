@@ -4,6 +4,7 @@ import Header from "./Header";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
+import Footer from "./Footer";
 
 const UserSignInBox = dynamic(() => import("@/components/molecules/UserSignInBox"), {
   ssr: false,
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <UserSignInBox />
           </Header>
           <div className="mt-16">{children}</div>
+          <Footer />
         </body>
       </html>
     </ClerkProvider>
