@@ -1,6 +1,17 @@
 import Link from "next/link";
-import { buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "../../ui/button";
 import { UserButton, currentUser } from "@clerk/nextjs";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuCheckboxItem,
+  DropdownMenuItem,
+} from "@radix-ui/react-dropdown-menu";
+import { User } from "@clerk/nextjs/server";
+import UserNameButton from "./UserNameButton";
 
 type UserSignInBoxProps = {};
 export default async function UserSignInBox({}: UserSignInBoxProps) {
@@ -24,7 +35,7 @@ export default async function UserSignInBox({}: UserSignInBoxProps) {
   return (
     <>
       <div className="flex flex-row items-center gap-2">
-        <span>Hi, {user.firstName}</span>
+        <UserNameButton user={user} />
         <UserButton afterSignOutUrl="/" signInUrl="/sign-in" />
       </div>
     </>

@@ -6,7 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
 import Footer from "./Footer";
 
-const UserSignInBox = dynamic(() => import("@/components/molecules/UserSignInBox"), {
+const UserSignInBox = dynamic(() => import("@/components/molecules/UserSignInBox/index"), {
   ssr: false,
 });
 
