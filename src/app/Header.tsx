@@ -114,6 +114,10 @@ export default function Header({ children: UserSignInBox }: HeaderProps) {
                   <a className="opacity-60 hover:opacity-100" href="/list-new">
                     Add Vehicle
                   </a>
+                  <span className="opacity-60">·</span>
+                  <a className="opacity-60 hover:opacity-100" href="/vehicles">
+                    My Vehicles
+                  </a>
                 </div>
               </div>
 

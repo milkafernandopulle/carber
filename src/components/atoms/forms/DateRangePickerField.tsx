@@ -1,4 +1,5 @@
 import { DatePicker } from "@/components/ui/date-picker";
+import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { FormItem, FormLabel, FormControl, FormMessage, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { type } from "os";
@@ -22,20 +23,11 @@ interface FormInputControllerProps<FieldsType extends FieldValues> {
 
 type Props<FieldsType extends FieldValues> = FormInputControllerProps<FieldsType> & {
   label?: string;
-  placeholder?: string;
-  type?: string;
-  inputProps?: Omit<
-    React.ComponentProps<typeof Input>,
-    "placeholder" | "label" | "value" | "onChangeText" | "onBlur" | "type"
-  >;
 };
 
-const DatePickerField = <FieldsType extends FieldValues>({
+const DateRangePickerField = <FieldsType extends FieldValues>({
   label,
   name,
-  placeholder,
-  type = "text",
-  inputProps,
 }: Props<FieldsType>) => {
   const { control } = useFormContext();
   return (
@@ -46,12 +38,7 @@ const DatePickerField = <FieldsType extends FieldValues>({
         <FormItem>
           <FormLabel className="block">{label}</FormLabel>
           <FormControl>
-            <DatePicker
-              {...inputProps}
-              value={field.value}
-              onChange={field.onChange}
-              placeholder={placeholder}
-            />
+            <DateRangePicker value={field.value} onChange={field.onChange} />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -60,4 +47,4 @@ const DatePickerField = <FieldsType extends FieldValues>({
   );
 };
 
-export default DatePickerField;
+export default DateRangePickerField;

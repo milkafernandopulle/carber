@@ -33,7 +33,7 @@ const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           <Button
             variant={"outline"}
             className={cn(
-              "w-full justify-start text-left font-normal",
+              "w-full justify-start text-left font-normal border border-input !bg-white !border-gray-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 rounded-md",
               !date && "text-muted-foreground"
             )}>
             <CalendarDaysIcon className="mr-2 h-4 w-4" />

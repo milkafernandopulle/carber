@@ -26,6 +26,8 @@ model Vehicle {
     ownerId        String
     availabilities VehicleAvailability[]
     images         String[]
+    VehicleBooking VehicleBooking[]
+    pricePerDay    Float
 }
 
 model VehicleAvailability {
@@ -34,4 +36,33 @@ model VehicleAvailability {
     to        DateTime
     vehicle   Vehicle? @relation(fields: [vehicleId], references: [id])
     vehicleId Int?
+}
+
+model VehicleBooking {
+    id                                    String   @id @default(cuid())
+    bookingFrom                           DateTime
+    bookingTo                             DateTime
+    vehicle                               Vehicle? @relation(fields: [vehicleId], references: [id])
+    vehicleId                             Int?
+    bookingUserId                         String
+    bookingUserFirstName                  String
+    bookingUserLastName                   String
+    bookingUserContactNo                  String
+    bookingUserAddressPostCode            String
+    bookingUserAddressLine1               String
+    bookingUserAddressLine2               String
+    bookingUserAddressCity                String
+    bookingUserAddressCountry             String
+    bookingUserDrivingLicenseNo           String
+    bookingUserDrivingLicenseIssueCountry String
+    bookingUserDrivingLicensePhoto        String[]
+    bookingUserEmergencyContactPhone      String
+    bookingUserEmergencyContactName       String
+    PaymentCardNo                         String
+    PaymentCardName                       String
+    PaymentCardExp                        String
+    PaymentCardSecret                     String
+    invoiceSubTotal                       Float
+    invoiceTax                            Float
+    invoiceTotal                          Float
 }

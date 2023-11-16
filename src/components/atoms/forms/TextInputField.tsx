@@ -9,6 +9,7 @@ import {
   FieldValues,
   Path,
   RegisterOptions,
+  useFormContext,
 } from "react-hook-form";
 
 interface FormInputControllerProps<FieldsType extends FieldValues> {
@@ -16,14 +17,14 @@ interface FormInputControllerProps<FieldsType extends FieldValues> {
   defaultValue?: string;
   rules?: RegisterOptions;
   error?: FieldError;
-  control: Control<FieldsType>;
 }
 
 type Props<FieldsType extends FieldValues> = FormInputControllerProps<FieldsType> & {
   label?: string;
   placeholder?: string;
-  type: string;
-  inputProps: Omit<
+  type?: string;
+  disabled?: boolean;
+  inputProps?: Omit<
     React.ComponentProps<typeof Input>,
     "placeholder" | "label" | "value" | "onChangeText" | "onBlur" | "type"
   >;
@@ -31,31 +32,55 @@ type Props<FieldsType extends FieldValues> = FormInputControllerProps<FieldsType
 
 const TextInputField = <FieldsType extends FieldValues>({
   label,
-  control,
   name,
   placeholder,
   type = "text",
   inputProps,
+  disabled = false,
 }: Props<FieldsType>) => {
+  const { control } = useFormContext();
+
   return (
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>{label}</FormLabel>
-          <FormControl>
-            <Input
-              {...inputProps}
-              type={type}
-              value={field.value}
-              onChange={field.onChange}
-              placeholder={placeholder}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
+      render={({ field }) => {
+        let value = field.value;
+        if (typeof value === "number") {
+          value = isNaN(field.value) || field.value === 0 ? "" : field.value.toString();
+        }
+        return (
+          <FormItem>
+            <FormLabel className="block">{label}</FormLabel>
+            <FormControl>
+              <Input
+                {...inputProps}
+                disabled={disabled || false}
+                type={type}
+                value={value}
+                onChange={(e) => {
+                  if (type === "text") {
+                    field.onChange(e);
+                    return;
+                  } else if (type === "number") {
+                    let output = parseInt(e.target.value, 10);
+                    output = isNaN(output) ? 0 : output;
+                    field.onChange({
+                      ...e,
+                      target: {
+                        ...e.target,
+                        value: output,
+                      },
+                    });
+                  }
+                }}
+                placeholder={placeholder}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        );
+      }}
     />
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 const navigation = {
   solutions: [
     { name: "Marketing", href: "#" },
@@ -97,13 +98,10 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8">
-            <img
-              className="h-7"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-              alt="Company name"
-            />
+            <img className="h-12 bg-white px-4 rounded-sm" src="/logo.png" alt="Carber" />
             <p className="text-sm leading-6 text-gray-300">
-              Making the world a better place through constructing elegant hierarchies.
+              Whether you're after a luxury sedan for a weekend getaway or an oversized van for
+              business use, Carber Cars has all your driving needs covered!
             </p>
             <div className="flex space-x-6">
               {navigation.social.map((item) => (
@@ -179,7 +177,7 @@ export default function Footer() {
         </div>
         <div className="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24">
           <p className="text-xs leading-5 text-gray-400">
-            &copy; 2020 Your Company, Inc. All rights reserved.
+            &copy; {new Date().getFullYear()} Carber, Inc. All rights reserved.
           </p>
         </div>
       </div>

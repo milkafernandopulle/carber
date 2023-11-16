@@ -9,14 +9,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import React from "react";
-import { Control, FieldError, FieldValues, Path, RegisterOptions } from "react-hook-form";
+import {
+  Control,
+  FieldError,
+  FieldValues,
+  Path,
+  RegisterOptions,
+  useFormContext,
+} from "react-hook-form";
 
 interface FormInputControllerProps<FieldsType extends FieldValues> {
   name: Path<FieldsType>;
   defaultValue?: string;
   rules?: RegisterOptions;
   error?: FieldError;
-  control: Control<FieldsType>;
   placeholder?: string;
 }
 
@@ -31,36 +37,45 @@ type Props<FieldsType extends FieldValues> = FormInputControllerProps<FieldsType
 
 const SelectField = <FieldsType extends FieldValues>({
   label,
-  control,
   name,
   inputProps,
   placeholder,
   items,
 }: Props<FieldsType>) => {
+  const { control } = useFormContext();
   return (
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel className="block">{label}</FormLabel>
-          <FormControl>
-            <Select {...inputProps} value={field.value} onValueChange={field.onChange}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={placeholder} />
-              </SelectTrigger>
-              <SelectContent>
-                {items.map((item) => (
-                  <SelectItem key={item} value={item.toString()}>
-                    {item}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
+      render={({ field }) => {
+        return (
+          <FormItem>
+            <FormLabel className="block">{label}</FormLabel>
+            <FormControl>
+              <Select
+                {...inputProps}
+                value={field.value?.toString()}
+                onValueChange={(value) => {
+                  field.onChange(items.find((item) => item.toString() === value));
+                }}>
+                <SelectTrigger className="w-full bg-white">
+                  <SelectValue placeholder={placeholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup className="overflow-y-auto max-h-[10rem]">
+                    {items.map((item) => (
+                      <SelectItem key={item} value={item.toString()}>
+                        {item}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        );
+      }}
     />
   );
 };

@@ -23,6 +23,8 @@ import { Path, useForm } from "react-hook-form";
 import { faker } from "@faker-js/faker";
 import { Button } from "@/components/ui/button";
 import FileUploadInput from "@/components/atoms/forms/FileUploadInput";
+import TextInputField from "@/components/atoms/forms/TextInputField";
+import SelectField from "@/components/atoms/forms/SelectField";
 
 const formSchema = z.object({
   make: z.string(),
@@ -32,6 +34,7 @@ const formSchema = z.object({
   vehicleType: z.string(),
   seats: z.number(),
   engine: z.number().min(500).max(10000),
+  pricePerDay: z.number().min(1).max(10000),
   color: z.string().min(1, { message: "Color is required" }),
   year: z
     .number()
@@ -68,6 +71,7 @@ function getDefaultValues() {
     color: faker.color.human(),
     year: faker.number.int({ min: 2000, max: 2023 }),
     allowedMilage: faker.number.int({ min: 5, max: 10 }) * 1000,
+    pricePerDay: faker.number.int({ min: 5, max: 10 }),
   };
 }
 
@@ -81,8 +85,6 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
     resolver: zodResolver(formSchema),
     defaultValues: defaults,
   });
-
-  // console.log(form.watch("images"));
 
   return (
     <Form {...form}>
@@ -98,7 +100,7 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
               </div>
               <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
                 <div className="sm:col-span-3">
-                  <SelectFormField
+                  <SelectField
                     name="make"
                     items={VehicleManufacturers}
                     label="Make"
@@ -107,10 +109,15 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                 </div>
 
                 <div className="sm:col-span-3">
-                  <TextFormField name="model" label="Model" placeholder="Enter model" />
+                  <TextInputField
+                    type="text"
+                    name="model"
+                    label="Model"
+                    placeholder="Enter model"
+                  />
                 </div>
                 <div className="sm:col-span-3">
-                  <SelectFormField
+                  <SelectField
                     name="fuel"
                     items={FuelTypes}
                     label="Fuel"
@@ -118,7 +125,7 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                   />
                 </div>
                 <div className="sm:col-span-3">
-                  <SelectFormField
+                  <SelectField
                     name="transmission"
                     label="Transmission"
                     items={TransmissionTypes}
@@ -126,7 +133,7 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                   />
                 </div>
                 <div className="sm:col-span-3">
-                  <SelectFormField
+                  <SelectField
                     name="vehicleType"
                     items={VehicleTypes}
                     label="Vehicle Type"
@@ -134,14 +141,15 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                   />
                 </div>
                 <div className="sm:col-span-3">
-                  <TextFormField
+                  <TextInputField
+                    type="number"
                     name="engine"
                     label="Engine Capacity(CC)"
                     placeholder="Enter engine capacity"
                   />
                 </div>
                 <div className="sm:col-span-3">
-                  <SelectFormField
+                  <SelectField
                     name="seats"
                     label="Seat Count"
                     items={SeatCountTypes}
@@ -149,13 +157,21 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                   />
                 </div>
                 <div className="sm:col-span-3">
-                  <TextFormField name="color" label="Color" placeholder="Enter color" />
+                  <TextInputField name="color" label="Color" placeholder="Enter color" />
                 </div>
                 <div className="sm:col-span-3">
-                  <TextFormField
+                  <TextInputField
                     name="allowedMilage"
                     label="Allowed Milage(KM)"
                     placeholder="Enter allowed milage"
+                    type="number"
+                  />
+                </div>
+                <div className="sm:col-span-3">
+                  <TextInputField
+                    name="pricePerDay"
+                    label="Price Per Day (£)"
+                    placeholder="Enter price per day for renting"
                     type="number"
                   />
                 </div>
@@ -195,7 +211,6 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
   }) {
     return (
       <FormField
-        control={form.control}
         name={name}
         render={({ field }) => (
           <FormItem>
@@ -234,7 +249,6 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
   }) {
     return (
       <FormField
-        control={form.control}
         name={name}
         render={({ field }) => (
           <FormItem>
@@ -242,7 +256,7 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
             <FormControl>
               <Input
                 type={type}
-                value={field.value}
+                value={field.value || ""}
                 onChange={field.onChange}
                 placeholder={placeholder}
               />
@@ -264,7 +278,6 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
   }) {
     return (
       <FormField
-        control={form.control}
         name={name}
         render={({ field }) => (
           <FormItem>

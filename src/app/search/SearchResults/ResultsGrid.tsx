@@ -42,13 +42,23 @@ export default function ResultsGrid({ results }: ResultsGridProps) {
                 {vehicle.transmission} · {vehicle.seats} seats · {capitalCase(vehicle.color)}
               </p>
             </div>
-            <Image
-              className="h-20 w-36 flex-shrink-0 rounded-full bg-gray-300"
-              src={`/images/body-types/${vehicle.vehicleType}.jpg`}
-              alt=""
-              width={320}
-              height={180}
-            />
+            {vehicle.images?.[0] ? (
+              <Image
+                className="h-20 w-36 flex-shrink-0 rounded-full bg-gray-300"
+                src={vehicle.images[0]}
+                alt=""
+                width={320}
+                height={180}
+              />
+            ) : (
+              <Image
+                className="h-20 w-36 flex-shrink-0 rounded-full bg-gray-300"
+                src={`/images/body-types/${vehicle.vehicleType}.jpg`}
+                alt=""
+                width={320}
+                height={180}
+              />
+            )}
           </div>
           <div>
             <div className="-mt-px flex divide-x divide-gray-200">

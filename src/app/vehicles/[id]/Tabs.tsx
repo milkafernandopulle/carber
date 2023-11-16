@@ -18,6 +18,11 @@ export default function Tabs({}: TabsProps) {
       href: `/vehicles/${id}/availability`,
       current: currentTab === "availability",
     },
+    {
+      name: "Bookings",
+      href: `/vehicles/${id}/bookings`,
+      current: currentTab === "bookings",
+    },
   ];
 
   return (

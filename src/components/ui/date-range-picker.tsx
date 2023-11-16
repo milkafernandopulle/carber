@@ -57,10 +57,9 @@ export function DatePickerWithRange({
       <Popover>
         <PopoverTrigger asChild>
           <Button
-            id="date"
             variant="ghost"
             className={cn(
-              "w-[300px] justify-start text-left font-normal",
+              "w-full justify-start text-left rounded-md font-normal border border-input !bg-white !border-gray-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
               !date && "text-muted-foreground"
             )}>
             <CalendarIcon className="mr-2 h-4 w-4" />
