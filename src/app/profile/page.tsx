@@ -1,12 +1,6 @@
-import { Button } from "@/components/ui/button";
-import clsx from "clsx";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { useState } from "react";
-import OwnerProfile from "./OwnerProfile";
-import Tabs from "./Tabs";
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs";
+import Tabs from "./Tabs";
 
 async function getOwnerProfileData(userId: string) {
   const statsInfo = {
@@ -53,8 +47,7 @@ async function getDriverProfileData(userId: string) {
   return { myBookings };
 }
 
-type PageProps = React.PropsWithChildren<{}>;
-export default async function Page({}: PageProps) {
+export default async function Page() {
   const { userId } = auth();
 
   if (!userId) {
@@ -69,7 +62,7 @@ export default async function Page({}: PageProps) {
   return (
     <div className="min-h-screen">
       <div className="mx-auto max-w-7xl sm:px-2 lg:px-8 mb-8">
-        <Tabs ownerProfile={ownerProfile} driverProfile={driverProfile} />
+        <Tabs ownerProfile={ownerProfile as any} driverProfile={driverProfile as any} />
       </div>
     </div>
   );

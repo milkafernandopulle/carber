@@ -99,7 +99,6 @@ export default function SearchForm({ searchMetaData }: SearchFormProps) {
   }) {
     return (
       <FormField
-        control={form.control}
         name={name}
         render={({ field }) => (
           <FormItem>
@@ -133,31 +132,16 @@ export default function SearchForm({ searchMetaData }: SearchFormProps) {
           <CardContent className="py-6 px-6">
             <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 border-b border-black/10 pb-6">
               <div className="sm:col-span-2">
-                <DatePickerField
-                  control={form.control}
-                  label="Start Date"
-                  name="startDate"
-                  placeholder=""
-                />
+                <DatePickerField label="Start Date" name="startDate" placeholder="" />
               </div>
               <div className="sm:col-span-1">
-                <SelectField
-                  items={times}
-                  control={form.control}
-                  label="Start Time"
-                  name="startTime"
-                />
+                <SelectField items={times} label="Start Time" name="startTime" />
               </div>
               <div className="sm:col-span-2">
-                <DatePickerField
-                  control={form.control}
-                  label="End Date"
-                  name="endDate"
-                  placeholder=""
-                />
+                <DatePickerField label="End Date" name="endDate" placeholder="" />
               </div>
               <div className="sm:col-span-1">
-                <SelectField items={times} control={form.control} label="End Time" name="endTime" />
+                <SelectField items={times} label="End Time" name="endTime" />
               </div>
             </div>
             <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6  pt-4">

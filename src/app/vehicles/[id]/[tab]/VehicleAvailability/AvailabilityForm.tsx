@@ -76,7 +76,7 @@ export default function AvailabilityForm({ vehicle, onSubmit }: AvailabilityForm
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit as any)}>
           <div>
             <FormField
               control={form.control}

@@ -2,11 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
-import Link from "next/link";
-import { notFound } from "next/navigation";
 import { useState } from "react";
-import OwnerProfile, { OwnerProfileProps } from "./OwnerProfile";
 import DriverProfile, { DriverProfileProps } from "./DriverProfile";
+import OwnerProfile, { OwnerProfileProps } from "./OwnerProfile";
 
 type TabsProps = {
   ownerProfile: OwnerProfileProps;

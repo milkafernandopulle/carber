@@ -2,7 +2,6 @@ import prisma from "@/lib/prisma";
 import { clerkClient } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/server";
 import { Vehicle, VehicleBooking } from "@prisma/client";
-import { capitalCase } from "change-case";
 import { format } from "date-fns";
 
 async function getBookings() {
@@ -11,7 +10,7 @@ async function getBookings() {
   const vehicleBookings: (VehicleBooking & {
     bookingUser?: User;
     vehicle?: Vehicle;
-  })[] = await prisma.vehicleBooking.findMany({
+  } & any)[] = await prisma.vehicleBooking.findMany({
     where: {},
     include: {
       vehicle: true,

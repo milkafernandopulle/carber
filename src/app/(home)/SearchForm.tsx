@@ -1,53 +1,14 @@
 "use client";
+import DatePickerField from "@/components/atoms/forms/DatePickerField";
+import SelectField from "@/components/atoms/forms/SelectField";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addDays } from "date-fns";
-import Image from "next/image";
-import Link from "next/link";
-import {
-  ErrorOption,
-  Field,
-  FieldArray,
-  FieldArrayPath,
-  FieldError,
-  FieldErrors,
-  FieldValues,
-  FormState,
-  Path,
-  RegisterOptions,
-  SubmitErrorHandler,
-  SubmitHandler,
-  UseFormRegisterReturn,
-  useForm,
-} from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { z } from "zod";
-import DatePickerField from "@/components/atoms/forms/DatePickerField";
-import { BaseSyntheticEvent } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import SelectField from "@/components/atoms/forms/SelectField";
 import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
 
 const formSchema = z.object({
   startDate: z.date(),
@@ -91,31 +52,16 @@ export default function SearchForm() {
           <CardContent>
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-3">
-                <DatePickerField
-                  control={form.control}
-                  label="Start Date"
-                  name="startDate"
-                  placeholder=""
-                />
+                <DatePickerField label="Start Date" name="startDate" placeholder="" />
               </div>
               <div className="sm:col-span-3">
-                <DatePickerField
-                  control={form.control}
-                  label="End Date"
-                  name="endDate"
-                  placeholder=""
-                />
+                <DatePickerField label="End Date" name="endDate" placeholder="" />
               </div>
               <div className="sm:col-span-3">
-                <SelectField
-                  items={times}
-                  control={form.control}
-                  label="End Time"
-                  name="startTime"
-                />
+                <SelectField items={times} label="End Time" name="startTime" />
               </div>
               <div className="sm:col-span-3">
-                <SelectField items={times} control={form.control} label="End Time" name="endTime" />
+                <SelectField items={times} label="End Time" name="endTime" />
               </div>
             </div>
           </CardContent>

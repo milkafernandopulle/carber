@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 const stats = [
   { id: 1, name: "Vehicles", value: "400+" },
   { id: 2, name: "Flat Platform fee", value: "3%" },
@@ -22,8 +23,8 @@ export default function StatsSection() {
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-600">
               Embark on your journey with confidence by choosing from our extensive range of
-              high-quality rental cars. Whether you're seeking the convenience of a compact car for
-              urban adventures, the spacious comfort of an SUV for family road trips, or the
+              high-quality rental cars. Whether you&apos;re seeking the convenience of a compact car
+              for urban adventures, the spacious comfort of an SUV for family road trips, or the
               elegance of a luxury vehicle for a special occasion, our fleet has you covered. With a
               commitment to providing top-notch vehicles, we ensure that each car in our selection
               is meticulously maintained, thoroughly inspected, and ready to meet your travel needs.

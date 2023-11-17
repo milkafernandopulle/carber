@@ -1,19 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import { cn } from "@/lib/utils";
-import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/20/solid";
-import { CursorArrowRaysIcon, EnvelopeOpenIcon, UsersIcon } from "@heroicons/react/24/outline";
-import { Vehicle, VehicleBooking } from "@prisma/client";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Vehicle, VehicleBooking } from "@prisma/client";
 import { format } from "date-fns";
-import Link from "next/link";
-import { FaCar } from "react-icons/fa";
-import { FaClipboardList } from "react-icons/fa";
-import { GiReceiveMoney } from "react-icons/gi";
 
 export type DriverProfileProps = {
   myBookings: (VehicleBooking & {

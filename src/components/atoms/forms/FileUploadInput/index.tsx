@@ -14,8 +14,8 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 }
 
 const FileUploadInput = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ label, ...props }, ref) => {
-    return <FileUpload label={label} ref={ref} {...props} />;
+  ({ label, value, ...props }, ref) => {
+    return <FileUpload value={value as any} label={label} ref={ref} {...props} />;
   }
 );
 FileUploadInput.displayName = "FileUploadInput";
