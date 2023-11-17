@@ -28,14 +28,16 @@ model Vehicle {
     images         String[]
     VehicleBooking VehicleBooking[]
     pricePerDay    Float
+    createdDate    DateTime              @default(now())
 }
 
 model VehicleAvailability {
-    id        String   @id @default(cuid())
-    from      DateTime
-    to        DateTime
-    vehicle   Vehicle? @relation(fields: [vehicleId], references: [id])
-    vehicleId Int?
+    id          String   @id @default(cuid())
+    from        DateTime
+    to          DateTime
+    vehicle     Vehicle? @relation(fields: [vehicleId], references: [id])
+    vehicleId   Int?
+    createdDate DateTime @default(now())
 }
 
 model VehicleBooking {
@@ -65,4 +67,5 @@ model VehicleBooking {
     invoiceSubTotal                       Float
     invoiceTax                            Float
     invoiceTotal                          Float
+    createdDate                           DateTime @default(now())
 }

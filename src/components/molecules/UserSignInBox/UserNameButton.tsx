@@ -29,13 +29,8 @@ export default function UserNameButton({ user }: UserNameButtonProps) {
       <DropdownMenuContent className="w-56">
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link className="cursor-pointer" href="/profile/driver">
-              Driver Profile
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link className="cursor-pointer" href="/profile/owner">
-              Car Owner Profile
+            <Link className="cursor-pointer" href="/profile">
+              Dashboard
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
