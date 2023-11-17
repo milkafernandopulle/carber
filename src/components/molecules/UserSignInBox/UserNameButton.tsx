@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { User } from "@clerk/nextjs/server";
+import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import {
   DropdownMenuPortal,
@@ -16,11 +16,13 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
+import { User } from "@clerk/nextjs/server";
 
 type UserNameButtonProps = {
   user: User;
 };
 export default function UserNameButton({ user }: UserNameButtonProps) {
+  const { role } = user.publicMetadata;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -33,11 +35,13 @@ export default function UserNameButton({ user }: UserNameButtonProps) {
               Dashboard
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link className="cursor-pointer" href="/admin">
-              Admin
-            </Link>
-          </DropdownMenuItem>
+          {role === "admin" && (
+            <DropdownMenuItem>
+              <Link className="cursor-pointer" href="/admin">
+                Admin
+              </Link>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
