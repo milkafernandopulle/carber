@@ -59,7 +59,7 @@ const TextInputField = <FieldsType extends FieldValues>({
                 type={type}
                 value={value}
                 onChange={(e) => {
-                  if (type === "text") {
+                  if (type !== "number") {
                     field.onChange(e);
                     return;
                   } else if (type === "number") {

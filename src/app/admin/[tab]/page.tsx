@@ -1,22 +1,48 @@
+import prisma from "@/lib/prisma";
 import { cn } from "@/lib/utils";
-import { BuildingOfficeIcon, CreditCardIcon, UserIcon, UsersIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { FaCar, FaClipboardList } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa6";
-import UsersTab from "./UsersTab";
-import VehiclesTab from "./VehiclesTab";
-import prisma from "@/lib/prisma";
-import { clerkClient } from "@clerk/nextjs";
 import BookingsTab from "./BookingsTab";
+import CarOwnersTab from "./CarOwnersTab";
+import DriversTab from "./DriversTab";
+import VehiclesTab from "./VehiclesTab";
+import Stats from "../Stats";
+
+async function getCarOwnerCount() {
+  const results = await prisma.vehicle.groupBy({
+    by: ["ownerId"],
+    _count: {
+      ownerId: true,
+    },
+  });
+  return results.length;
+}
+
+async function getDriverCount() {
+  const results = await prisma.vehicleBooking.groupBy({
+    by: ["bookingUserId"],
+    _count: {
+      bookingUserId: true,
+    },
+  });
+  return results.length;
+}
 
 async function getTabs() {
   const tabs = [
     {
-      name: "Users",
-      href: "users",
+      name: "Car Owners",
+      href: "car-owners",
       icon: FaUsers,
-      count: (await clerkClient.users.getUserList()).length,
+      count: await getCarOwnerCount(),
+    },
+    {
+      name: "Drivers",
+      href: "drivers",
+      icon: FaUsers,
+      count: await getDriverCount(),
     },
     { name: "Vehicles", href: "vehicles", icon: FaCar, count: await prisma.vehicle.count() },
     {
@@ -51,6 +77,12 @@ export default async function Page({ params: { tab: selectedTab } }: PageProps) 
               Admin Dashboard
             </h1>
             <p className="mt-2 mb-12 text-sm text-gray-500">View and Manage system data.</p>
+
+            <Stats />
+
+            <h3 className="text-base font-semibold mt-16 mb-6 leading-6 text-gray-900">
+              <span className="inline-block mr-10">System Data</span>
+            </h3>
             <div className="   ">
               <div className="border-b border-gray-200">
                 <nav className="-mb-px flex space-x-8" aria-label="Tabs">
@@ -94,7 +126,8 @@ export default async function Page({ params: { tab: selectedTab } }: PageProps) 
               </div>
 
               <div className="py-10">
-                {selectedTab === "users" && <UsersTab />}
+                {selectedTab === "car-owners" && <CarOwnersTab />}
+                {selectedTab === "drivers" && <DriversTab />}
                 {selectedTab === "vehicles" && <VehiclesTab />}
                 {selectedTab === "bookings" && <BookingsTab />}
               </div>
