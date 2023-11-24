@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import Link from "next/link";
 import { FaCar, FaClipboardList } from "react-icons/fa";
 import { GiReceiveMoney } from "react-icons/gi";
+import MessageBoard from "./MessageBoard";
 
 export type OwnerProfileProps = {
   statsInfo: {
@@ -133,6 +134,9 @@ export default function OwnerProfile({
                         {booking.bookingUserDrivingLicensePhoto.map((photo) => (
                           <img key={photo} src={photo} className="h-40 rounded-sm" alt="sss" />
                         ))}
+                      </div>
+                      <div className="flex justify-end ">
+                        <MessageBoard bookingId={booking.id} />
                       </div>
                     </AccordionContent>
                   </li>

@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/accordion";
 import { Vehicle, VehicleBooking } from "@prisma/client";
 import { format } from "date-fns";
+import MessageBoard from "./MessageBoard";
 
 export type DriverProfileProps = {
   myBookings: (VehicleBooking & {
@@ -71,6 +72,9 @@ export default function DriverProfile({ myBookings }: DriverProfileProps) {
                             alt="sss"
                           />
                         ))}
+                      </div>
+                      <div className="flex justify-end ">
+                        <MessageBoard bookingId={booking.id} />
                       </div>
                     </AccordionContent>
                   </li>
