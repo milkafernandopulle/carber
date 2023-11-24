@@ -29,6 +29,7 @@ model Vehicle {
     VehicleBooking VehicleBooking[]
     pricePerDay    Float
     createdDate    DateTime              @default(now())
+    adminApproved  Boolean               @default(false)
 }
 
 model VehicleAvailability {

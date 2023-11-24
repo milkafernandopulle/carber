@@ -128,6 +128,7 @@ async function getSearchResults(searchQuery: SearchQuery) {
     where: {
       ...vehicleQuery,
       availabilities,
+      adminApproved: true,
     },
   });
 

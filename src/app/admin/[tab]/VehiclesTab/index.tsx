@@ -3,6 +3,10 @@ import { clerkClient } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/server";
 import { Vehicle } from "@prisma/client";
 import { capitalCase } from "change-case";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { approveAdmin } from "./actions";
+import ApproveButton from "./ApproveButton";
 
 async function getVehicles() {
   const users: (User & {
@@ -10,10 +14,26 @@ async function getVehicles() {
     bookingCount?: number;
   })[] = await clerkClient.users.getUserList();
 
-  const vehicles: (Vehicle & {
-    bookingCount?: number;
-  })[] = await prisma.vehicle.findMany({
+  const vehicles = await prisma.vehicle.findMany({
     where: {},
+    include: {
+      availabilities: {
+        where: {
+          OR: [
+            {
+              from: {
+                gte: new Date(),
+              },
+            },
+            {
+              to: {
+                gte: new Date(),
+              },
+            },
+          ],
+        },
+      },
+    },
   });
 
   const bookingCounts = await prisma.vehicleBooking.groupBy({
@@ -26,7 +46,7 @@ async function getVehicles() {
     },
   });
   vehicles.forEach((vehicle) => {
-    vehicle.bookingCount =
+    (vehicle as any).bookingCount =
       bookingCounts.find((v) => v.vehicleId === vehicle.id)?._count?.vehicleId || 0;
   });
 
@@ -65,8 +85,16 @@ export default async function VehiclesTab({}: VehiclesTabProps) {
           <tbody className="divide-y divide-gray-200 bg-white">
             {vehicles.map((vehicle) => (
               <tr key={vehicle.id}>
-                <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                  {vehicle.make} {vehicle.model}
+                <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 space-y-1">
+                  <div>
+                    {vehicle.make} {vehicle.model}
+                  </div>
+                  <div className="space-x-2">
+                    {!vehicle.adminApproved && <Badge>Admin not Approved</Badge>}
+                    {!vehicle?.availabilities.length && (
+                      <Badge variant="default">No Available Dates</Badge>
+                    )}
+                  </div>
                 </td>
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {vehicle.year}
@@ -75,12 +103,10 @@ export default async function VehiclesTab({}: VehiclesTabProps) {
                   {vehicle.transmission}
                 </td>
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  {vehicle.bookingCount}
+                  {(vehicle as any).bookingCount}
                 </td>
                 <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                  <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                    Edit
-                  </a>
+                  {!vehicle.adminApproved && <ApproveButton vehicleId={vehicle.id} />}
                 </td>
               </tr>
             ))}

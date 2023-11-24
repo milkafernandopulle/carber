@@ -3,6 +3,8 @@ import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import { auth } from "@clerk/nextjs";
 import * as changeCase from "change-case";
 import Link from "next/link";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const people = [
   {
@@ -77,7 +79,22 @@ function getVehicleList() {
       ownerId: userId,
     },
     include: {
-      availabilities: true,
+      availabilities: {
+        where: {
+          OR: [
+            {
+              from: {
+                gte: new Date(),
+              },
+            },
+            {
+              to: {
+                gte: new Date(),
+              },
+            },
+          ],
+        },
+      },
     },
   });
 }
@@ -90,7 +107,12 @@ export default async function Page({}: PageProps) {
     <>
       <div className="mx-auto max-w-7xl sm:px-2 lg:px-8 mb-8">
         <div className="mx-auto max-w-2xl px-4 lg:max-w-4xl lg:px-0">
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Vehicles</h1>
+          <h1 className="flex justify-between text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+            <span>Vehicles</span>
+            <Link href="/list-new" className={buttonVariants()}>
+              Add Vehicle
+            </Link>
+          </h1>
           <p className="mt-2 text-sm text-gray-500">Manage your vehicles and view their status.</p>
         </div>
       </div>
@@ -105,10 +127,20 @@ export default async function Page({}: PageProps) {
               <div className="flex gap-x-4">
                 <div className="min-w-0 flex-auto">
                   <p className="text-sm font-semibold leading-6 text-gray-900">
-                    <Link href={`/vehicles/${vehicle.id}`}>
-                      <span className="absolute inset-x-0 -top-px bottom-0" />
-                      {vehicle.model} {vehicle.year}{" "}
-                      <span className="text-muted-foreground">({vehicle.make})</span>
+                    <Link className="flex gap-8" href={`/vehicles/${vehicle.id}`}>
+                      <span>
+                        <span className="absolute inset-x-0 -top-px bottom-0" />
+                        {vehicle.model} {vehicle.year}{" "}
+                        <span className="text-muted-foreground">({vehicle.make})</span>
+                      </span>
+                      <div className="space-x-2">
+                        {!vehicle?.adminApproved && (
+                          <Badge variant="default">Admin not Approved</Badge>
+                        )}
+                        {!vehicle?.availabilities.length && (
+                          <Badge variant="default">No Available Dates</Badge>
+                        )}
+                      </div>
                     </Link>
                   </p>
                   <p className="mt-1 flex text-xs leading-5 text-gray-500">
