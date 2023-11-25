@@ -61,6 +61,6 @@ export async function createUser(
     return newUser;
   } catch (error) {
     console.log("xxxxxxxxxxxxxxxx");
-    console.log(Object.keys(error.errors), error.errors[0], error.clerkError);
+    // console.log(Object.keys(error.errors), error.errors[0], error.clerkError);
   }
 }
