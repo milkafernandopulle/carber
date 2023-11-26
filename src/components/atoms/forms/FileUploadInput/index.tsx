@@ -34,28 +34,26 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(function 
   { label, name, uploadUrl, onChange, value }: FileUploadProps,
   ref
 ) {
-  const { files, addFile, removeFile, setFiles } = useFileUpload();
-
-  useEffect(() => {
-    setFiles((prev) => {
-      if (value === undefined || JSON.stringify(prev) === JSON.stringify(value)) return prev;
-      return value;
-    });
-  }, [value, setFiles]);
-
   const handleOnChange = (blob: PutBlobResult) => {
     addFile(blob.url);
   };
 
-  useEffect(() => {
-    if (JSON.stringify(files) === JSON.stringify(value)) return;
+  const addFile = (file: string) => {
     onChange?.({
       target: {
         name,
-        value: files,
+        value: [...value, file],
       },
     } as any);
-  }, [files, name, value, onChange]);
+  };
+  const removeFile = (file: string) => {
+    onChange?.({
+      target: {
+        name,
+        value: value.filter((f) => f !== file),
+      },
+    } as any);
+  };
 
   return (
     <>
@@ -85,7 +83,7 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(function 
         </div>
         <div>
           <div className="mt-2 flex gap-x-2">
-            {files?.map((file) => (
+            {value?.map((file) => (
               <div key={file} className="h-24 w-24 relative rounded-md overflow-hidden bg-gray-300">
                 <PhotoIcon
                   className={clsx("h-24 w-24 text-gray-300", {
@@ -115,18 +113,3 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(function 
 });
 
 FileUpload.displayName = "FileUpload";
-
-function useFileUpload() {
-  const [files, setFiles] = useState<string[]>([]);
-
-  return {
-    files,
-    setFiles,
-    addFile: (file: string) => {
-      setFiles([...files, file]);
-    },
-    removeFile: (file: string) => {
-      setFiles(files.filter((f) => f !== file));
-    },
-  };
-}
