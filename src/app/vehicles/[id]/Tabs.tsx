@@ -52,7 +52,7 @@ export default function Tabs({}: TabsProps) {
           {tab.name}
         </Link>
       ))}
-      <EditModal id={id} />
+      <EditModal id={id as unknown as string} />
     </nav>
   );
 }
