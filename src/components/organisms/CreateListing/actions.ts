@@ -15,10 +15,24 @@ export async function createListing(
     throw new Error("User not authenticated");
   }
 
+  const response = await fetch(`https://api.postcodes.io/postcodes/${values.locationPostcode}`);
+  const {
+    result: { longitude: locationLong, latitude: locationLat },
+  } = (await response.json()) as {
+    status: number;
+    result: {
+      longitude: number;
+      latitude: number;
+    };
+  };
+
   const result = await prisma.vehicle.create({
     data: {
       ...values,
+      locationLong,
+      locationLat,
       ownerId: userId,
+      locationPostcode: values.locationPostcode.toUpperCase(),
     },
   });
 

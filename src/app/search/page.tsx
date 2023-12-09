@@ -41,10 +41,15 @@ type AvailabilitySearchQuery = {
   startTime: string;
   endTime: string;
 };
+type LocationSearchQuery = {
+  postcode: string;
+  distance: number;
+};
 
-type SearchQuery = VehicleSearchQuery & AvailabilitySearchQuery;
+type SearchQuery = VehicleSearchQuery & AvailabilitySearchQuery & LocationSearchQuery;
 async function getSearchResults(searchQuery: SearchQuery) {
   const availabilityQueryKeys = ["startDate", "endDate", "startTime", "endTime"];
+  const locationQueryKeys = ["postcode", "distance"];
   const vehicleQueryKeys = [
     "make",
     "model",
@@ -87,6 +92,11 @@ async function getSearchResults(searchQuery: SearchQuery) {
 
   const vehicleQuery = lodash.pick(refinedSearchQuery, ...vehicleQueryKeys) as VehicleSearchQuery;
 
+  const locationQuery = lodash.pick(
+    refinedSearchQuery,
+    ...locationQueryKeys
+  ) as LocationSearchQuery;
+
   if (vehicleQuery.year) {
     vehicleQuery.year = parseInt(vehicleQuery.year as unknown as string);
   }
@@ -124,11 +134,41 @@ async function getSearchResults(searchQuery: SearchQuery) {
     },
   };
 
+  let locationClause = {} as any;
+  try {
+    const res = await fetch(`https://api.postcodes.io/postcodes/${locationQuery.postcode}`);
+
+    if (res.status === 200) {
+      const { result } = await res.json();
+
+      const distance = (parseInt(locationQuery.distance as any) || 10) * 1.60934;
+      const {
+        lat: [latGte, latLte],
+        long: [longGte, longLte],
+      } = insideGeo(result.longitude, result.latitude, distance);
+
+      locationClause = {
+        locationLat: {
+          gte: latGte,
+          lte: latLte,
+        },
+        locationLong: {
+          gte: longGte,
+          lte: longLte,
+        },
+      };
+    }
+  } catch {
+    console.log("Invalid postcode");
+    return [];
+  }
+
   const results = await prisma.vehicle.findMany({
     where: {
       ...vehicleQuery,
       availabilities,
       adminApproved: true,
+      ...locationClause,
     },
   });
 
@@ -151,4 +191,14 @@ export default async function Page({ searchParams }: PageProps) {
       </div>
     </>
   );
+}
+
+function insideGeo(long: number, lat: number, distance: number) {
+  const earthRadius = 6371;
+  const latRadius = distance / earthRadius;
+  const longRadius = distance / (earthRadius * Math.cos((Math.PI * lat) / 180));
+  return {
+    lat: [lat - latRadius, lat + latRadius],
+    long: [long - longRadius, long + longRadius],
+  };
 }

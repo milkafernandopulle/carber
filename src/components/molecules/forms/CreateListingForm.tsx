@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import FileUploadInput from "@/components/atoms/forms/FileUploadInput";
 import TextInputField from "@/components/atoms/forms/TextInputField";
 import SelectField from "@/components/atoms/forms/SelectField";
+import PostcodeField from "@/components/atoms/forms/PostcodeField";
 
 const formSchema = z.object({
   make: z.string(),
@@ -52,7 +53,10 @@ const formSchema = z.object({
     .max(1000000, {
       message: "Allowed milage must be less than 1000000KM",
     }),
-  images: z.array(z.string()),
+  images: z.array(z.string()).optional(),
+  locationPostcode: z.string(),
+  locationAddressLine1: z.string(),
+  locationAddressLine2: z.string().optional(),
 });
 
 function getDefaultValues() {
@@ -85,6 +89,8 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
     resolver: zodResolver(formSchema),
     defaultValues: defaults,
   });
+
+  console.log(form.formState.errors);
 
   return (
     <Form {...form}>
@@ -181,6 +187,35 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                     name="images"
                     label="Upload Photos"
                   />
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
+              <div>
+                <h2 className="text-base font-semibold leading-7 text-gray-900">
+                  Vehicle Location
+                </h2>
+                <p className="mt-1 text-sm leading-6 text-gray-600">
+                  We need some basic information about your vehicle location.
+                </p>
+              </div>
+              <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+                <div className="sm:col-span-6">
+                  <TextInputField
+                    name="locationAddressLine1"
+                    label="Address Line 1"
+                    placeholder="Enter Address Line 1"
+                  />
+                </div>
+                <div className="sm:col-span-6">
+                  <TextInputField
+                    name="locationAddressLine2"
+                    label="Address Line 2 (Optional)"
+                    placeholder="Enter Address Line 2"
+                  />
+                </div>
+                <div className="sm:col-span-3">
+                  <PostcodeField name="locationPostcode" label="Postcode" />
                 </div>
               </div>
             </div>

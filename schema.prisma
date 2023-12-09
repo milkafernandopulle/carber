@@ -28,8 +28,15 @@ model Vehicle {
     images         String[]
     VehicleBooking VehicleBooking[]
     pricePerDay    Float
-    createdDate    DateTime              @default(now())
-    adminApproved  Boolean               @default(false)
+
+    locationPostcode     String
+    locationAddressLine1 String
+    locationAddressLine2 String?
+    locationLong         Float
+    locationLat          Float
+
+    createdDate   DateTime @default(now())
+    adminApproved Boolean  @default(false)
 }
 
 model VehicleAvailability {

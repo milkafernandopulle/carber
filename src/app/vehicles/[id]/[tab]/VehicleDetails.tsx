@@ -84,6 +84,13 @@ export default function VehicleDetails({ vehicle }: VehicleDetailsProps) {
               £ {vehicle.pricePerDay.toFixed(2)}
             </dd>
           </div>
+          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm font-medium text-gray-900">Vehicle Location</dt>
+            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 uppercase">
+              {vehicle.locationAddressLine1} {!vehicle.locationAddressLine2 ?? ","}{" "}
+              {vehicle.locationAddressLine2} {vehicle.locationPostcode}
+            </dd>
+          </div>
         </dl>
       </div>
     </>

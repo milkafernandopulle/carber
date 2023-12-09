@@ -28,6 +28,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import DatePickerField from "@/components/atoms/forms/DatePickerField";
 import SelectField from "@/components/atoms/forms/SelectField";
 import { addDays, format, parse } from "date-fns";
+import TextInputField from "@/components/atoms/forms/TextInputField";
 
 const formSchema = z.object({
   startDate: z.date(),
@@ -41,6 +42,8 @@ const formSchema = z.object({
   vehicleType: z.string().optional(),
   seats: z.number().optional(),
   year: z.number().optional(),
+  postcode: z.string().optional(),
+  distance: z.number().optional(),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -81,6 +84,8 @@ export default function SearchForm({ searchMetaData }: SearchFormProps) {
         transmission: values.transmission === "-" ? undefined : values.transmission,
         vehicleType: values.vehicleType === "-" ? undefined : values.vehicleType,
         seats: values.seats?.toString() === "-" ? undefined : values.seats,
+        postcode: values.postcode?.toString() === "-" ? undefined : values.postcode,
+        distance: values.distance?.toString() === "-" ? undefined : values.distance,
       });
     });
     return () => subscription.unsubscribe();
@@ -131,13 +136,19 @@ export default function SearchForm({ searchMetaData }: SearchFormProps) {
         <Card>
           <CardContent className="py-6 px-6">
             <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 border-b border-black/10 pb-6">
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-1">
+                <TextInputField label="Postcode" name="postcode" placeholder="Enter Postcode" />
+              </div>
+              <div className="sm:col-span-1">
+                <SelectField items={distances} label="nearby (miles)" name="distance" />
+              </div>
+              <div className="sm:col-span-1">
                 <DatePickerField label="Start Date" name="startDate" placeholder="" />
               </div>
               <div className="sm:col-span-1">
                 <SelectField items={times} label="Start Time" name="startTime" />
               </div>
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-1">
                 <DatePickerField label="End Date" name="endDate" placeholder="" />
               </div>
               <div className="sm:col-span-1">
@@ -212,6 +223,8 @@ function useSearch() {
     vehicleType: searchParams.get("vehicleType") || "-",
     seats: searchParams.get("seats") || ("-" as unknown as number),
     year: searchParams.get("year") || ("-" as unknown as number),
+    distance: searchParams.get("distance") || (10 as unknown as number),
+    postcode: searchParams.get("postcode") || ("" as unknown as string),
   } as FormSchema;
 
   const onSubmit = (values: FormSchema) => {
@@ -227,6 +240,8 @@ function useSearch() {
       vehicleType: values.vehicleType || "",
       seats: values.seats?.toString() || "",
       year: values.year?.toString() || "",
+      postcode: values.postcode?.toString() || "",
+      distance: values.distance || "",
     };
     const params = new URLSearchParams(
       Object.keys(formattedValues).reduce((acc: any, cur: any) => {
@@ -241,6 +256,8 @@ function useSearch() {
 
   return { search, onSubmit };
 }
+
+const distances = [1, 2, 5, 10, 15, 20, 30, 40, 50, 100, 500];
 
 const times = [
   "12.00AM",

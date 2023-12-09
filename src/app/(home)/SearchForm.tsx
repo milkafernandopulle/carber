@@ -1,6 +1,7 @@
 "use client";
 import DatePickerField from "@/components/atoms/forms/DatePickerField";
 import SelectField from "@/components/atoms/forms/SelectField";
+import TextInputField from "@/components/atoms/forms/TextInputField";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
@@ -15,6 +16,8 @@ const formSchema = z.object({
   startTime: z.string(),
   endDate: z.date(),
   endTime: z.string(),
+  postcode: z.string(),
+  distance: z.number(),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -24,6 +27,8 @@ const defaultValues: FormSchema = {
   startTime: "10.00AM",
   endDate: addDays(new Date(), 2),
   endTime: "10.00AM",
+  postcode: "",
+  distance: 1,
 };
 
 export default function SearchForm() {
@@ -40,6 +45,8 @@ export default function SearchForm() {
       startTime: data.startTime,
       endDate: data.endDate.toISOString().split("T")[0],
       endTime: data.endTime,
+      postcode: data.postcode,
+      distance: data.distance.toString(),
     });
 
     router.push(`/search?${params.toString()}`);
@@ -51,17 +58,23 @@ export default function SearchForm() {
         <Card>
           <CardContent>
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-              <div className="sm:col-span-3">
+              <div className="sm:col-span-2">
                 <DatePickerField label="Start Date" name="startDate" placeholder="" />
               </div>
-              <div className="sm:col-span-3">
+              <div className="sm:col-span-1">
+                <SelectField items={times} label="Start Time" name="startTime" />
+              </div>
+              <div className="sm:col-span-2">
                 <DatePickerField label="End Date" name="endDate" placeholder="" />
               </div>
-              <div className="sm:col-span-3">
-                <SelectField items={times} label="End Time" name="startTime" />
+              <div className="sm:col-span-1">
+                <SelectField items={times} label="End Time" name="endTime" />
               </div>
               <div className="sm:col-span-3">
-                <SelectField items={times} label="End Time" name="endTime" />
+                <TextInputField label="Postcode" name="postcode" placeholder="Enter Postcode" />
+              </div>
+              <div className="sm:col-span-3">
+                <SelectField items={distances} label="nearby (miles)" name="distance" />
               </div>
             </div>
           </CardContent>
@@ -73,6 +86,8 @@ export default function SearchForm() {
     </Form>
   );
 }
+
+const distances = [1, 2, 5, 10, 15, 20, 30, 40, 50, 100, 500];
 
 const times = [
   "12.00AM",

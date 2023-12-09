@@ -37,7 +37,7 @@ const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
               !date && "text-muted-foreground"
             )}>
             <CalendarDaysIcon className="mr-2 h-4 w-4" />
-            {date ? format(date, "PPP") : <span>Pick a date</span>}
+            {date ? format(date, "P") : <span>Pick a date</span>}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0">
