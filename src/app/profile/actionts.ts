@@ -41,7 +41,7 @@ export async function getStats(period: (typeof Periods)[number]) {
       to.setMonth(11, 31);
       to.setHours(23, 59, 59, 999);
       break;
-    case "All":
+    case "All time":
     default:
       from = new Date(0);
       to = new Date();
