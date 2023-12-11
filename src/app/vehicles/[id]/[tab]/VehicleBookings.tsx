@@ -34,6 +34,11 @@ export default function VehicleBookings({ vehicle, vehicleBookings }: VehicleBoo
       <div className="border-b border-t border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border">
         <ul role="list" className="divide-y divide-gray-200">
           <Accordion type="single" collapsible>
+            {vehicleBookings.length === 0 && (
+              <>
+                <p className="px-4 text-center py-8">No Bookings</p>
+              </>
+            )}
             {vehicleBookings.map((booking) => (
               <AccordionItem key={booking.id} value={booking.id}>
                 <li key={booking.id} className="p-4 sm:p-6">

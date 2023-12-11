@@ -6,10 +6,10 @@ type PageProps = {};
 export default function Page({}: PageProps) {
   return (
     <>
-      <div className="container mb-60">
-        <Card className="max-w-xl m-auto px-12 py-6">
+      <div className="container h-[calc(100vh_-_128px)] grid place-items-center">
+        <Card className="max-w-xl m-auto px-12 py-6 relative -top-12">
           <h1 className="font-bold text-3xl text-center mb-6">Booking Success</h1>
-          Your booking has been confirmed. We will send you a confirmation email shortly.
+          Your booking has been confirmed. Safe travels!
           <br />
           <br />
           <br />

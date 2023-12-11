@@ -15,7 +15,7 @@ import { GiReceiveMoney } from "react-icons/gi";
 import { getStats } from "./actionts";
 import { Button } from "@/components/ui/button";
 
-const Periods = ["Today", "Yesterday", "This Week", "This Month", "This Year", "All"] as const;
+const Periods = ["Today", "Yesterday", "This Week", "This Month", "This Year", "All time"] as const;
 
 type StatsProps = {};
 export default function Stats({}: StatsProps) {
@@ -66,7 +66,7 @@ export default function Stats({}: StatsProps) {
             <Button
               key={period}
               className={selectedPeriod === period ? "mx-1" : "mx-1 text-muted-foreground"}
-              variant={selectedPeriod === period ? "outline" : "ghost"}
+              variant={selectedPeriod === period ? "default" : "ghost"}
               onClick={() => {
                 setSelectedPeriod(period);
               }}>
@@ -84,7 +84,10 @@ export default function Stats({}: StatsProps) {
                 <div className="absolute rounded-md bg-indigo-500 p-3">
                   <item.icon className="h-6 w-6 text-white" aria-hidden="true" />
                 </div>
-                <p className="ml-16 truncate text-sm font-medium text-gray-500">{item.name}</p>
+                <p className="ml-16 truncate text-sm font-medium text-gray-500">
+                  {item.name} <br />
+                  <span className="text-xs">({selectedPeriod})</span>
+                </p>
               </dt>
               <dd className="ml-16 flex items-baseline pb-6 sm:pb-7">
                 <p className="text-2xl font-semibold text-gray-900">{item.stat(stats[index])}</p>

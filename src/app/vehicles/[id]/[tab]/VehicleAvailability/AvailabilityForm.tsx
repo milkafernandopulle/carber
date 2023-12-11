@@ -28,7 +28,7 @@ import clsx from "clsx";
 import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { addDays } from "date-fns";
 import { DateRange, Matcher } from "react-day-picker";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 
 const formSchema = z.object({
@@ -73,6 +73,22 @@ export default function AvailabilityForm({ vehicle, onSubmit }: AvailabilityForm
     return () => subscription.unsubscribe();
   }, [handleSubmit, watch, onSubmit]);
 
+  const lastAvailabilitiesCount = useRef<number>();
+  const availabilities = watch("availabilities");
+
+  useEffect(() => {
+    if (availabilities.length === 0 && lastAvailabilitiesCount.current === 1) {
+      setTimeout(() => {
+        window.location.reload();
+      }, 1200);
+    } else if (availabilities.length === 1 && lastAvailabilitiesCount.current === 0) {
+      setTimeout(() => {
+        window.location.reload();
+      }, 1200);
+    }
+    lastAvailabilitiesCount.current = availabilities.length;
+  }, [availabilities.length]);
+
   return (
     <>
       <Form {...form}>
@@ -85,7 +101,7 @@ export default function AvailabilityForm({ vehicle, onSubmit }: AvailabilityForm
                 <FormItem>
                   <FormLabel>Available Dates</FormLabel>
                   <FormDescription>
-                    Select dates your vehicle will be available for booking.
+                    Select dates of availability for your vehicle. You can select multiple ranges.
                   </FormDescription>
                   <FormControl>
                     <DateListInput value={field.value} onChange={field.onChange} />

@@ -97,19 +97,20 @@ export default function OwnerProfile({
 
       <div className="mt-10">
         <h3 className="text-base font-semibold leading-6 text-gray-900 my-6">Latest Vehicles</h3>
-        <div className="grid grid-flow-col grid-cols-4 sm:grid-cols-3">
+        <div className="grid gap-2 grid-cols-4 sm:grid-cols-3">
           {latestVehicles.map((vehicle) => (
-            <div
+            <Link
+              href={`/vehicles/${vehicle.id}`}
               key={vehicle.id}
-              className="space-y-3 p-3 border-b border-t border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border">
-              <img src={vehicle.images?.[0]} alt="" className="aspect-square w-full rounded-sm" />
+              className="space-y-3 p-3 border-b border-t border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border block">
+              <img src={vehicle.images?.[0]} alt="" className="aspect-square  rounded-sm w-fit" />
               <div>
                 <h4 className="">
                   {vehicle.make} {vehicle.model} {vehicle.year}
                 </h4>
                 <h5 className="text-muted-foreground text-sm">£{vehicle.pricePerDay}/day</h5>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

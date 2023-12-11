@@ -3,6 +3,7 @@ import { clerkClient } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/server";
 import { Vehicle, VehicleBooking } from "@prisma/client";
 import { format } from "date-fns";
+import { enGB } from "date-fns/locale";
 
 async function getBookings() {
   const users: User[] = await clerkClient.users.getUserList();
@@ -60,8 +61,13 @@ export default async function BookingsTab({}: BookingsTabProps) {
                   {booking.vehicle?.make} {booking.vehicle?.model} {booking.vehicle?.year}
                 </td>
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  {format(booking.bookingFrom, "dd MMM yyyy hh.mma")} -{" "}
-                  {format(booking.bookingTo, "dd MMM yyyy hh.mma")}
+                  {format(booking.bookingFrom, "dd MMM yyyy hh.mma", {
+                    locale: enGB,
+                  })}{" "}
+                  -{" "}
+                  {format(booking.bookingTo, "dd MMM yyyy hh.mma", {
+                    locale: enGB,
+                  })}
                 </td>
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {/* {booking.bookingCount} */}

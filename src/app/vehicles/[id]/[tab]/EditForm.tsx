@@ -61,8 +61,9 @@ const formSchema = z.object({
 type EditFormProps = {
   defaultValues?: z.infer<typeof formSchema>;
   onSubmit: (values: z.infer<typeof formSchema>) => void;
+  onCancel: () => void;
 };
-export default function EditForm({ defaultValues, onSubmit }: EditFormProps) {
+export default function EditForm({ defaultValues, onSubmit, onCancel }: EditFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues,
@@ -153,7 +154,7 @@ export default function EditForm({ defaultValues, onSubmit }: EditFormProps) {
             </div>
             <div className="sm:col-span-6">
               <DialogFooter className="text-right flex-1 mb-4">
-                <Button variant="outline" type="button">
+                <Button onClick={onCancel} variant="outline" type="button">
                   Cancel
                 </Button>
                 <Button type="submit">Save</Button>

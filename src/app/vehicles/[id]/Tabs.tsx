@@ -52,54 +52,6 @@ export default function Tabs({}: TabsProps) {
           {tab.name}
         </Link>
       ))}
-      <EditModal id={id as unknown as string} />
     </nav>
-  );
-}
-
-type EditModalProps = {
-  id: string;
-};
-function EditModal({ id }: EditModalProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleOpen = (open: boolean) => setIsModalOpen(open);
-  const [currentVehicle, setCurrentVehicle] = useState<Vehicle>();
-
-  useEffect(() => {
-    getVehicle(id).then((res) => {
-      setCurrentVehicle(res);
-    });
-  }, [id]);
-
-  const handleOnSubmit = async (data: any) => {
-    await saveVehicle(id, data);
-    setCurrentVehicle(data);
-    handleOpen(false);
-    window.location.reload();
-  };
-
-  if (!currentVehicle) return null;
-
-  return (
-    <>
-      <Dialog open={isModalOpen} onOpenChange={(open) => setIsModalOpen(open)}>
-        <div className="text-right flex-auto">
-          <Button variant="outline" className="ml-2" onClick={() => handleOpen(true)}>
-            Edit Details
-          </Button>
-        </div>
-        <DialogContent className="sm:max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>Edit Details</DialogTitle>
-            <DialogDescription>
-              Change the details of this vehicle. You can change the details of this vehicle.
-            </DialogDescription>
-          </DialogHeader>
-          <ScrollArea className="h-[70vh] px-3 py-4">
-            <EditForm defaultValues={currentVehicle} onSubmit={handleOnSubmit} />
-          </ScrollArea>
-        </DialogContent>
-      </Dialog>
-    </>
   );
 }

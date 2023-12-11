@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useEffect } from "react";
+import { enGB } from "date-fns/locale";
 
 export interface DatePickerProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "value"> {
@@ -37,7 +38,13 @@ const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
               !date && "text-muted-foreground"
             )}>
             <CalendarDaysIcon className="mr-2 h-4 w-4" />
-            {date ? format(date, "P") : <span>Pick a date</span>}
+            {date ? (
+              format(date, "P", {
+                locale: enGB,
+              })
+            ) : (
+              <span>Pick a date</span>
+            )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0">

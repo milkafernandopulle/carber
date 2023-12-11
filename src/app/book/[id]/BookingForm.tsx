@@ -27,6 +27,7 @@ import DatePickerField from "@/components/atoms/forms/DatePickerField";
 import { Button } from "@/components/ui/button";
 import { fakerEN_GB as faker } from "@faker-js/faker";
 import { addDays, differenceInMinutes, format, parse, set } from "date-fns";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 const deliveryMethods = [
   { id: 1, title: "Standard", turnaround: "4–10 business days", price: "$5.00" },
@@ -152,12 +153,22 @@ type BookingFormProps = {
 export default function BookingForm({ vehicle, user, onSubmit }: BookingFormProps) {
   const defaultValues = getDefaultValues();
 
+  const [lastSearchParamsStr] = useLocalStorage("lastSearchParams", "{}");
+
+  const lastSearchParams = useMemo(() => {
+    return JSON.parse(lastSearchParamsStr);
+  }, [lastSearchParamsStr]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       ...defaultValues,
       bookingUserFirstName: user.firstName,
       bookingUserLastName: user.lastName,
+      pickupDate: new Date(lastSearchParams.startDate),
+      pickupTime: lastSearchParams.startTime,
+      dropOffDate: new Date(lastSearchParams.endDate),
+      dropOffTime: lastSearchParams.endTime,
     },
   });
 
@@ -176,16 +187,16 @@ export default function BookingForm({ vehicle, user, onSubmit }: BookingFormProp
 
             <div className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
               <div>
-                <DatePickerField label="Pickup Date" name="pickupDate" />
+                <TextInputField label="Pickup Date" name="pickupDate" disabled />
               </div>
               <div>
-                <SelectField items={times} label="Pickup Time" name="pickupTime" />
+                <TextInputField label="Pickup Time" name="pickupTime" disabled />
               </div>
               <div>
-                <DatePickerField label="Drop off Date" name="dropOffDate" />
+                <TextInputField label="Drop off Date" name="dropOffDate" disabled />
               </div>
               <div>
-                <SelectField items={times} label="Drop off Time" name="dropOffTime" />
+                <TextInputField label="Drop off Time" name="dropOffTime" disabled />
               </div>
             </div>
           </div>
@@ -368,6 +379,14 @@ function useInvoiceCalculations(
 ) {
   const data = form.watch();
   const totals = useMemo(() => {
+    if (!data.pickupDate || !data.pickupTime || !data.dropOffDate || !data.dropOffTime) {
+      return {
+        totalHours: 0,
+        subTotal: 0,
+        tax: 0,
+        total: 0,
+      };
+    }
     let pickDate = parse(
       `${format(data.pickupDate, "yyyy-MM-dd")} ${data.pickupTime}`,
       "yyyy-MM-dd hh.mmaa",

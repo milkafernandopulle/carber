@@ -2,7 +2,7 @@
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs";
 
-const Periods = ["Today", "Yesterday", "This Week", "This Month", "This Year", "All"] as const;
+const Periods = ["Today", "Yesterday", "This Week", "This Month", "This Year", "All time"] as const;
 
 export async function getStats(period: (typeof Periods)[number]) {
   const { userId } = auth();

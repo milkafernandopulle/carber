@@ -1,6 +1,9 @@
 import { FormItem, FormLabel, FormControl, FormMessage, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { format, isDate } from "date-fns";
 import { type } from "os";
+
+import { enGB } from "date-fns/locale";
 import React from "react";
 import {
   Control,
@@ -48,6 +51,10 @@ const TextInputField = <FieldsType extends FieldValues>({
         let value = field.value;
         if (typeof value === "number") {
           value = isNaN(field.value) || field.value === 0 ? "" : field.value.toString();
+        } else if (isDate(value)) {
+          value = format(value, "P", {
+            locale: enGB,
+          }) as any;
         }
         return (
           <FormItem>

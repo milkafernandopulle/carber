@@ -230,9 +230,9 @@ function useSearch() {
   const onSubmit = (values: FormSchema) => {
     const formattedValues = {
       startDate: format(values.startDate, "yyyy-MM-dd"),
-      startTime: searchParams.get("startTime") || "10.00AM",
+      startTime: values.startTime || "10.00AM",
       endDate: format(values.endDate, "yyyy-MM-dd"),
-      endTime: searchParams.get("endTime") || "10.00AM",
+      endTime: values.endTime || "10.00AM",
       make: values.make || "",
       model: values.model || "",
       fuel: values.fuel || "",

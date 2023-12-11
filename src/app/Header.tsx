@@ -14,13 +14,15 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 
 type HeaderProps = React.PropsWithChildren<{}>;
 export default function Header({ children: UserSignInBox }: HeaderProps) {
   const [open, setOpen] = useState(false);
+
+  const auth = useAuth();
 
   return (
     <header className="sticky top-0 shadow bg-white z-10">
@@ -38,10 +40,14 @@ export default function Header({ children: UserSignInBox }: HeaderProps) {
                   <a className="opacity-60 hover:opacity-100" href="/search">
                     Search
                   </a>
-                  <span className="opacity-60">·</span>
-                  <Link className="opacity-60 hover:opacity-100" href="/vehicles">
-                    My Vehicles
-                  </Link>
+                  {auth.isSignedIn && (
+                    <>
+                      <span className="opacity-60">·</span>
+                      <Link className="opacity-60 hover:opacity-100" href="/vehicles">
+                        My Vehicles
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
 

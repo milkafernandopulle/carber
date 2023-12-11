@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useEffect, useMemo } from "react";
+import { enGB } from "date-fns/locale";
 
 export type DateRangePickerProps = {
   value: DateRange | undefined;
@@ -52,9 +53,18 @@ export function DatePickerWithRange({
     [disableRanges]
   );
 
+  const handleOpenChange = (open: boolean) => {
+    console.log(date);
+    if (!open) {
+      if (!date?.from || !date?.to) {
+        setDate(undefined);
+      }
+    }
+  };
+
   return (
     <div className={cn("grid gap-2", className)}>
-      <Popover>
+      <Popover onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>
           <Button
             variant="ghost"
@@ -66,13 +76,21 @@ export function DatePickerWithRange({
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "LLL dd, y")} - {format(date.to, "LLL dd, y")}
+                  {format(date.from, "LLL dd, y", {
+                    locale: enGB,
+                  })}{" "}
+                  -{" "}
+                  {format(date.to, "LLL dd, y", {
+                    locale: enGB,
+                  })}
                 </>
               ) : (
-                format(date.from, "LLL dd, y")
+                format(date.from, "LLL dd, y", {
+                  locale: enGB,
+                })
               )
             ) : (
-              <span>Select Dates</span>
+              <span>Add date range</span>
             )}
           </Button>
         </PopoverTrigger>
