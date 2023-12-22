@@ -175,7 +175,10 @@ function EditModal({ id }: EditModalProps) {
           <ScrollArea className="h-[70vh] px-3 py-4">
             <EditForm
               onCancel={handleOnCancel}
-              defaultValues={currentVehicle}
+              defaultValues={{
+                ...currentVehicle,
+                locationAddressLine2: currentVehicle.locationAddressLine2 ?? undefined,
+              }}
               onSubmit={handleOnSubmit}
             />
           </ScrollArea>
