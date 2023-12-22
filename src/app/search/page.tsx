@@ -168,6 +168,7 @@ async function getSearchResults(searchQuery: SearchQuery) {
       ...vehicleQuery,
       availabilities,
       adminApproved: true,
+      published: true,
       ...locationClause,
     },
   });

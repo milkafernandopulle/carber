@@ -58,10 +58,8 @@ export default function Stats({}: StatsProps) {
 
   return (
     <>
-      <div className="mt-10">
+      <div className="mt-6">
         <h3 className="text-base font-semibold leading-6 text-gray-900">
-          <span className="inline-block mr-10">Statistics</span>
-
           {Periods.map((period) => (
             <Button
               key={period}

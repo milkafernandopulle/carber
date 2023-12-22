@@ -28,6 +28,7 @@ import SelectField from "@/components/atoms/forms/SelectField";
 
 import FileUploadField from "@/components/atoms/forms/FileUploadField";
 import { DialogFooter } from "@/components/ui/dialog";
+import PostcodeField from "@/components/atoms/forms/PostcodeField";
 
 const formSchema = z.object({
   make: z.string(),
@@ -56,6 +57,9 @@ const formSchema = z.object({
       message: "Allowed milage must be less than 1000000KM",
     }),
   images: z.array(z.string()),
+  locationPostcode: z.string(),
+  locationAddressLine1: z.string(),
+  locationAddressLine2: z.string().optional(),
 });
 
 type EditFormProps = {
@@ -151,6 +155,23 @@ export default function EditForm({ defaultValues, onSubmit, onCancel }: EditForm
                 name="images"
                 label="Upload Photos"
               />
+            </div>
+            <div className="sm:col-span-3">
+              <TextInputField
+                name="locationAddressLine1"
+                label="Address Line 1"
+                placeholder="Enter Address Line 1"
+              />
+            </div>
+            <div className="sm:col-span-3">
+              <TextInputField
+                name="locationAddressLine2"
+                label="Address Line 2 (Optional)"
+                placeholder="Enter Address Line 2"
+              />
+            </div>
+            <div className="sm:col-span-3">
+              <PostcodeField name="locationPostcode" label="Postcode" />
             </div>
             <div className="sm:col-span-6">
               <DialogFooter className="text-right flex-1 mb-4">

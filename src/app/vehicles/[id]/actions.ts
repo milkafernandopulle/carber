@@ -35,3 +35,24 @@ export async function saveVehicle(id: string, data: any) {
 
   return vehicle;
 }
+
+export async function savePublishStatus(id: string, publish: boolean) {
+  const vehicle = await prisma.vehicle.findUnique({
+    where: {
+      id: parseInt(id),
+    },
+  });
+  if (!vehicle) {
+    throw new Error(`Vehicle ${id} not found`);
+  }
+  await prisma.vehicle.update({
+    where: {
+      id: parseInt(id),
+    },
+    data: {
+      published: publish,
+    },
+  });
+
+  return vehicle;
+}

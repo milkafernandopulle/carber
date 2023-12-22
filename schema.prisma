@@ -22,7 +22,7 @@ model Vehicle {
     color          String
     allowedMilage  Int
     year           Int
-    published      Boolean               @default(false)
+    published      Boolean               @default(true)
     ownerId        String
     availabilities VehicleAvailability[]
     images         String[]

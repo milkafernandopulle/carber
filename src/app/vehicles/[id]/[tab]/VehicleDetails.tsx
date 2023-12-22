@@ -20,16 +20,29 @@ import {
 import { useEffect, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import EditForm from "../[tab]/EditForm";
-import { getVehicle, saveVehicle } from "../actions";
+import { getVehicle, savePublishStatus, saveVehicle } from "../actions";
 
 type VehicleDetailsProps = {
   vehicle: Vehicle;
 };
 export default function VehicleDetails({ vehicle }: VehicleDetailsProps) {
+  const handlePublish = (publish: boolean) => async (data: any) => {
+    await savePublishStatus(vehicle.id as unknown as string, publish);
+    window.location.reload();
+  };
+
   return (
     <>
       <div className="px-4 py-6">
-        <EditModal id={vehicle.id as unknown as string} />
+        <div className="text-right flex-auto">
+          <EditModal id={vehicle.id as unknown as string} />
+          <Button
+            variant={!vehicle.published ? "default" : "destructive"}
+            className="ml-2"
+            onClick={handlePublish(!vehicle.published)}>
+            {vehicle.published ? "Un-Publish" : "Publish"}
+          </Button>
+        </div>
       </div>
       <div className="border-t border-gray-100">
         <dl className="divide-y divide-gray-100">
@@ -149,11 +162,9 @@ function EditModal({ id }: EditModalProps) {
   return (
     <>
       <Dialog open={isModalOpen} onOpenChange={(open) => setIsModalOpen(open)}>
-        <div className="text-right flex-auto">
-          <Button variant="outline" className="ml-2" onClick={() => handleOpen(true)}>
-            Change Details
-          </Button>
-        </div>
+        <Button variant="outline" className="ml-2" onClick={() => handleOpen(true)}>
+          Change Details
+        </Button>
         <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
             <DialogTitle>Edit Details</DialogTitle>

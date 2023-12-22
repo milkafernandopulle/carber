@@ -30,15 +30,17 @@ export default function UserNameButton({ user }: UserNameButtonProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link className="cursor-pointer" href="/profile">
-              Dashboard
-            </Link>
-          </DropdownMenuItem>
+          {role !== "admin" && (
+            <DropdownMenuItem asChild>
+              <Link className="cursor-pointer" href="/profile">
+                Account
+              </Link>
+            </DropdownMenuItem>
+          )}
           {role === "admin" && (
             <DropdownMenuItem>
               <Link className="cursor-pointer" href="/admin">
-                Admin
+                Admin Dashboard
               </Link>
             </DropdownMenuItem>
           )}

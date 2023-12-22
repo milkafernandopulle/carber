@@ -3,12 +3,13 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { FaCar, FaClipboardList } from "react-icons/fa";
-import { FaUsers } from "react-icons/fa6";
+import { FaUsers, FaChartBar } from "react-icons/fa6";
 import BookingsTab from "./BookingsTab";
 import CarOwnersTab from "./CarOwnersTab";
 import DriversTab from "./DriversTab";
 import VehiclesTab from "./VehiclesTab";
 import Stats from "../Stats";
+import StatisticsTab from "./StatisticsTab";
 
 async function getCarOwnerCount() {
   const results = await prisma.vehicle.groupBy({
@@ -32,6 +33,12 @@ async function getDriverCount() {
 
 async function getTabs() {
   const tabs = [
+    {
+      name: "Statistics",
+      href: "statistics",
+      icon: FaChartBar,
+      count: false,
+    },
     {
       name: "Car Owners",
       href: "car-owners",
@@ -77,12 +84,6 @@ export default async function Page({ params: { tab: selectedTab } }: PageProps) 
               Admin Dashboard
             </h1>
             <p className="mt-2 mb-12 text-sm text-gray-500">View and Manage system data.</p>
-
-            <Stats />
-
-            <h3 className="text-base font-semibold mt-16 mb-6 leading-6 text-gray-900">
-              <span className="inline-block mr-10">System Data</span>
-            </h3>
             <div className="   ">
               <div className="border-b border-gray-200">
                 <nav className="-mb-px flex space-x-8" aria-label="Tabs">
@@ -130,6 +131,7 @@ export default async function Page({ params: { tab: selectedTab } }: PageProps) 
                 {selectedTab === "drivers" && <DriversTab />}
                 {selectedTab === "vehicles" && <VehiclesTab />}
                 {selectedTab === "bookings" && <BookingsTab />}
+                {selectedTab === "statistics" && <StatisticsTab />}
               </div>
             </div>
           </div>
