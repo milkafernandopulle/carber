@@ -166,6 +166,9 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                   <TextInputField name="color" label="Color" placeholder="Enter color" />
                 </div>
                 <div className="sm:col-span-3">
+                  <TextInputField type="number" name="year" label="Year" placeholder="Enter year" />
+                </div>
+                <div className="sm:col-span-3">
                   <TextInputField
                     name="allowedMilage"
                     label="Allowed Milage(KM)"
