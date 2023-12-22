@@ -18,6 +18,8 @@ export interface DatePickerProps
 
 const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
   ({ className, value: date, onChange, ...props }, ref) => {
+    const [open, setOpen] = React.useState(false);
+
     const handleOnSelect = (date?: Date) => {
       if (onChange) {
         onChange({
@@ -26,10 +28,11 @@ const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           },
         } as any);
       }
+      setOpen(false);
     };
 
     return (
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant={"outline"}
