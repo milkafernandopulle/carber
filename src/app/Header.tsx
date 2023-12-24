@@ -32,12 +32,12 @@ export default function Header({ children: UserSignInBox }: HeaderProps) {
         <div className="bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between">
-              <div className="hidden gap-12 lg:flex lg:flex-1 lg:items-center">
+              <div className="gap-12 lg:flex lg:flex-1 lg:items-center">
                 <a href="/">
                   <span className="sr-only">Your Company</span>
                   <img className="h-14 w-auto" src="/logo.png" alt="" />
                 </a>
-                <div className="space-x-2">
+                <div className="space-x-2 hidden md:block">
                   <a className="opacity-60 hover:opacity-100" href="/search">
                     Search
                   </a>

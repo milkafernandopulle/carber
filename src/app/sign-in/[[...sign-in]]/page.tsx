@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <HideClerkBranding />
-      <div className="p-36 grid place-items-center">
+      <div className="px-1 py-32 md:p-36 grid place-items-center">
         <SignIn />
       </div>
     </>

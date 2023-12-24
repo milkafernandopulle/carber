@@ -12,6 +12,15 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { User } from "@clerk/nextjs/server";
 import UserNameButton from "./UserNameButton";
+import {
+  Bars3Icon,
+  MagnifyingGlassIcon,
+  QuestionMarkCircleIcon,
+  ShoppingBagIcon,
+  XMarkIcon,
+  UserIcon,
+} from "@heroicons/react/24/outline";
+import { cn } from "@/lib/utils";
 
 type UserSignInBoxProps = {};
 export default async function UserSignInBox({}: UserSignInBoxProps) {
@@ -22,11 +31,14 @@ export default async function UserSignInBox({}: UserSignInBoxProps) {
   if (!loggedIn) {
     return (
       <>
-        <Link href="/sign-in" className={buttonVariants({ variant: "ghost" })}>
+        <Link
+          href="/sign-in"
+          className={cn(buttonVariants({ variant: "ghost" }), "hidden md:inline")}>
           Sign In
         </Link>
         <Link href="/sign-up" className={buttonVariants({})}>
-          Sign Up
+          <span className="hidden md:inline">Sign Up</span>
+          <UserIcon className="w-6 md:hidden" />
         </Link>
       </>
     );

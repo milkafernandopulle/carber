@@ -31,7 +31,7 @@ export default function StatsSection() {
               Discover the perfect ride for your next adventure and enjoy a seamless rental
               experience with our reliable and diverse fleet.
             </p>
-            <dl className="mt-16 grid max-w-xl grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 xl:mt-16">
+            <dl className="mt-16 grid max-w-xl grid-cols-2 gap-8 sm:mt-20 sm:grid-cols-2 xl:mt-16">
               {stats.map((stat) => (
                 <div
                   key={stat.id}
