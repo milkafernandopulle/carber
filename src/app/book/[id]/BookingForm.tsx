@@ -38,6 +38,8 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
+const requiredMessage = { message: "Invalid value" };
+
 const formSchema = z
   .object({
     pickupDate: z.date(),
@@ -57,10 +59,22 @@ const formSchema = z
     bookingUserDrivingLicensePhoto: z.array(z.string()),
     bookingUserEmergencyContactPhone: z.string(),
     bookingUserEmergencyContactName: z.string(),
-    PaymentCardNo: z.string(),
-    PaymentCardName: z.string(),
-    PaymentCardExp: z.string(),
-    PaymentCardSecret: z.string(),
+    PaymentCardNo: z.string().min(16, requiredMessage).max(16, requiredMessage),
+    PaymentCardName: z.string().min(1, requiredMessage).max(100, requiredMessage),
+    PaymentCardExp: z
+      .string()
+      .min(5, requiredMessage)
+      .max(5, requiredMessage)
+      .refine(
+        (value) => {
+          const [mm, yy] = value.split("/");
+          return (mm + yy).length === 4 && parseInt(yy + mm, 10) > 2312;
+        },
+        {
+          message: "Invalid value",
+        }
+      ),
+    PaymentCardSecret: z.string().min(3, requiredMessage).max(4, requiredMessage),
   })
   .refine(
     (data) => {
@@ -135,7 +149,7 @@ function getDefaultValues() {
       .number({ min: 1, max: 12 })
       .toString()
       .padStart(2, "0")}/${faker.datatype.number({
-      min: 21,
+      min: 24,
       max: 30,
     })}`,
     PaymentCardSecret: faker.finance.creditCardCVV(),
@@ -283,13 +297,13 @@ export default function BookingForm({ vehicle, user, onSubmit }: BookingFormProp
                 <TextInputField label="Name on card" name="PaymentCardName" />
               </div>
               <div className="col-span-4">
-                <TextInputField label="Card No" name="PaymentCardNo" />
+                <TextInputField label="Card No" name="PaymentCardNo" type="number" />
               </div>
               <div className="col-span-2">
                 <TextInputField label="Expiration date (MM/YY)" name="PaymentCardExp" />
               </div>
               <div className="col-span-2">
-                <TextInputField label="CVC" name="PaymentCardSecret" />
+                <TextInputField label="CVC" name="PaymentCardSecret" type="number" />
               </div>
             </div>
           </div>

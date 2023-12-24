@@ -32,13 +32,28 @@ import PostcodeField from "@/components/atoms/forms/PostcodeField";
 
 const formSchema = z.object({
   make: z.string(),
-  model: z.string(),
-  fuel: z.string(),
-  transmission: z.string(),
-  vehicleType: z.string(),
-  seats: z.number(),
+  model: z.string().min(1, {
+    message: "Required",
+  }),
+  fuel: z.string().min(1, {
+    message: "Required",
+  }),
+  transmission: z.string().min(1, {
+    message: "Required",
+  }),
+  vehicleType: z.string().min(1, {
+    message: "Required",
+  }),
+  seats: z.number().min(1, {
+    message: "Required",
+  }),
   engine: z.number().min(500).max(10000),
-  pricePerDay: z.number().min(1).max(10000),
+  pricePerDay: z
+    .number()
+    .min(1, {
+      message: "Required",
+    })
+    .max(10000),
   color: z.string().min(1, { message: "Color is required" }),
   year: z
     .number()
@@ -54,11 +69,15 @@ const formSchema = z.object({
       message: "Allowed milage must be greater than 0KM",
     })
     .max(1000000, {
-      message: "Allowed milage must be less than 1000000KM",
+      message: "Allowed milage must be less than 1000000mi",
     }),
   images: z.array(z.string()),
-  locationPostcode: z.string(),
-  locationAddressLine1: z.string(),
+  locationPostcode: z.string().min(1, {
+    message: "Required",
+  }),
+  locationAddressLine1: z.string().min(1, {
+    message: "Required",
+  }),
   locationAddressLine2: z.string().optional(),
 });
 
@@ -88,7 +107,13 @@ export default function EditForm({ defaultValues, onSubmit, onCancel }: EditForm
             </div>
 
             <div className="sm:col-span-3">
-              <TextInputField type="text" name="model" label="Model" placeholder="Enter model" />
+              <TextInputField
+                type="text"
+                name="model"
+                label="Model"
+                placeholder="Enter model"
+                maxLength={10}
+              />
             </div>
             <div className="sm:col-span-3">
               <SelectField
@@ -120,6 +145,7 @@ export default function EditForm({ defaultValues, onSubmit, onCancel }: EditForm
                 name="engine"
                 label="Engine Capacity(CC)"
                 placeholder="Enter engine capacity"
+                maxLength={6}
               />
             </div>
             <div className="sm:col-span-3">
@@ -131,12 +157,21 @@ export default function EditForm({ defaultValues, onSubmit, onCancel }: EditForm
               />
             </div>
             <div className="sm:col-span-3">
-              <TextInputField name="color" label="Color" placeholder="Enter color" />
+              <TextInputField name="color" label="Color" placeholder="Enter color" maxLength={10} />
+            </div>
+            <div className="sm:col-span-3">
+              <TextInputField
+                type="number"
+                name="year"
+                label="Year"
+                placeholder="Enter year"
+                maxLength={4}
+              />
             </div>
             <div className="sm:col-span-3">
               <TextInputField
                 name="allowedMilage"
-                label="Allowed Milage(KM)"
+                label="Allowed Milage(miles)"
                 placeholder="Enter allowed milage"
                 type="number"
               />
@@ -147,6 +182,7 @@ export default function EditForm({ defaultValues, onSubmit, onCancel }: EditForm
                 label="Price Per Day (£)"
                 placeholder="Enter price per day for renting"
                 type="number"
+                maxLength={4}
               />
             </div>
             <div className="sm:col-span-6">
@@ -161,6 +197,7 @@ export default function EditForm({ defaultValues, onSubmit, onCancel }: EditForm
                 name="locationAddressLine1"
                 label="Address Line 1"
                 placeholder="Enter Address Line 1"
+                maxLength={100}
               />
             </div>
             <div className="sm:col-span-3">
@@ -168,6 +205,7 @@ export default function EditForm({ defaultValues, onSubmit, onCancel }: EditForm
                 name="locationAddressLine2"
                 label="Address Line 2 (Optional)"
                 placeholder="Enter Address Line 2"
+                maxLength={100}
               />
             </div>
             <div className="sm:col-span-3">

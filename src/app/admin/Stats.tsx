@@ -20,35 +20,41 @@ const Periods = ["Today", "Yesterday", "This Week", "This Month", "This Year", "
 type StatsProps = {};
 export default function Stats({}: StatsProps) {
   const [stats, setStats] = useState<number[]>();
+  const [statsLoading, setStatsLoading] = useState(0);
   const [selectedPeriod, setSelectedPeriod] = useState<(typeof Periods)[number]>("Today");
 
   useEffect(() => {
+    setStatsLoading((prev) => prev + 1);
     getStats(selectedPeriod).then((data) => {
       setStats(data);
+      setStatsLoading((prev) => prev - 1);
     });
   }, [selectedPeriod]);
 
   const statsItems = [
     {
-      id: 1,
-      name: "Bookings",
-      stat: (value: number) => value,
-      icon: FaClipboardList,
-      href: "/vehicles",
-    },
-    {
       id: 2,
       name: "Total Revenue",
-      stat: (value: number) => `£${value.toFixed(2)}`,
+      stat: (value: number) =>
+        `£${new Intl.NumberFormat("en-GB", {
+          currency: "GBP",
+        }).format(value)}`,
       icon: GiReceiveMoney,
-      href: "/vehicles",
+      href: "/admin/revenue",
     },
     {
       id: 3,
       name: "Vehicles Listed",
       stat: (value: number) => value,
       icon: FaCar,
-      href: "/vehicles",
+      href: "/admin/vehicles",
+    },
+    {
+      id: 1,
+      name: "Bookings",
+      stat: (value: number) => value,
+      icon: FaClipboardList,
+      href: "/admin/bookings",
     },
   ];
 
@@ -85,11 +91,13 @@ export default function Stats({}: StatsProps) {
                 <p className="ml-16 truncate text-sm font-medium text-gray-500">{item.name}</p>
               </dt>
               <dd className="ml-16 flex items-baseline pb-6 sm:pb-7">
-                <p className="text-2xl font-semibold text-gray-900">{item.stat(stats[index])}</p>
+                <p className="text-2xl font-semibold text-gray-900">
+                  {statsLoading ? "-" : item.stat(stats[index])}
+                </p>
                 <div className="absolute inset-x-0 bottom-0 bg-gray-50 px-4 py-4 sm:px-6">
                   <div className="text-sm">
                     <Link
-                      href="/vehicles"
+                      href={item.href}
                       className="font-medium text-indigo-600 hover:text-indigo-500">
                       View all<span className="sr-only"> {item.name} stats</span>
                     </Link>

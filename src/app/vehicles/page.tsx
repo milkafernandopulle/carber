@@ -145,8 +145,8 @@ export default async function Page({}: PageProps) {
                   </p>
                   <p className="mt-1 flex text-xs leading-5 text-gray-500">
                     <div className="relative truncate">
-                      Allowed {vehicle.allowedMilage}KM · {changeCase.capitalCase(vehicle.color)} ·{" "}
-                      {vehicle.engine}cc · {vehicle.transmission}
+                      Allowed {vehicle.allowedMilage}miles · {changeCase.capitalCase(vehicle.color)}{" "}
+                      · {vehicle.engine}cc · {vehicle.transmission}
                     </div>
                   </p>
                 </div>

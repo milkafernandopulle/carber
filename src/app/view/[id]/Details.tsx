@@ -96,7 +96,7 @@ export default function VehicleDetails({
                   <li>Seat count - {vehicle.seats}</li>
                   <li>Color - {capitalCase(vehicle.color)}</li>
                   <li>Engine - {vehicle.engine}cc</li>
-                  <li>Allowed Milage - {vehicle.allowedMilage}km</li>
+                  <li>Allowed Milage - {vehicle.allowedMilage}miles</li>
                   <li>Transmission - {vehicle.transmission}</li>
                   <li>Type of Vehicle - {vehicle.vehicleType}</li>
                 </ul>

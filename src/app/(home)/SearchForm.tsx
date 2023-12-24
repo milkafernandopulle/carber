@@ -10,6 +10,7 @@ import { addDays } from "date-fns";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+import PostcodeField from "@/components/atoms/forms/PostcodeField";
 
 const formSchema = z.object({
   startDate: z.date(),
@@ -71,10 +72,15 @@ export default function SearchForm() {
                 <SelectField items={times} label="End Time" name="endTime" />
               </div>
               <div className="sm:col-span-3">
-                <TextInputField label="Postcode" name="postcode" placeholder="Enter Postcode" />
+                <PostcodeField
+                  label="Postcode"
+                  name="postcode"
+                  placeholder="Enter Postcode"
+                  className="w-full"
+                />
               </div>
               <div className="sm:col-span-3">
-                <SelectField items={distances} label="nearby (miles)" name="distance" />
+                <SelectField items={distances} label="Nearby (miles)" name="distance" />
               </div>
             </div>
           </CardContent>

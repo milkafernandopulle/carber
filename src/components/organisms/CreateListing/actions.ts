@@ -33,6 +33,7 @@ export async function createListing(
       locationLat,
       ownerId: userId,
       locationPostcode: values.locationPostcode.toUpperCase(),
+      published: true,
     },
   });
 

@@ -29,6 +29,7 @@ import DatePickerField from "@/components/atoms/forms/DatePickerField";
 import SelectField from "@/components/atoms/forms/SelectField";
 import { addDays, format, parse } from "date-fns";
 import TextInputField from "@/components/atoms/forms/TextInputField";
+import PostcodeField from "@/components/atoms/forms/PostcodeField";
 
 const formSchema = z.object({
   startDate: z.date(),
@@ -137,7 +138,7 @@ export default function SearchForm({ searchMetaData }: SearchFormProps) {
           <CardContent className="py-6 px-6">
             <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 border-b border-black/10 pb-6">
               <div className="sm:col-span-1">
-                <TextInputField label="Postcode" name="postcode" placeholder="Enter Postcode" />
+                <PostcodeField label="Postcode" name="postcode" placeholder="Enter Postcode" />
               </div>
               <div className="sm:col-span-1">
                 <SelectField items={distances} label="nearby (miles)" name="distance" />

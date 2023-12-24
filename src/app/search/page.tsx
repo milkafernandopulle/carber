@@ -117,6 +117,10 @@ async function getSearchResults(searchQuery: SearchQuery) {
     new Date()
   );
 
+  if (lte >= gte) {
+    return [];
+  }
+
   let availabilities = {
     some: {
       AND: [

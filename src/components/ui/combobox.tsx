@@ -21,7 +21,7 @@ type ComboboxProps = React.HTMLAttributes<HTMLInputElement> & {
   onSearchChange: (value: string) => void;
 };
 const Combobox = React.forwardRef<ComboboxProps, ComboboxProps>(
-  ({ value, items, onSearchChange, onValueChange }, ref) => {
+  ({ value, items, onSearchChange, onValueChange, className }, ref) => {
     const [open, setOpen] = React.useState(false);
     const [search, setSearch] = React.useState<string>("");
 
@@ -42,17 +42,21 @@ const Combobox = React.forwardRef<ComboboxProps, ComboboxProps>(
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-[200px] justify-between rounded-md">
+            className={cn("w-full justify-between rounded-md", className)}>
             {value?.toUpperCase() || "Select..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
+        <PopoverContent className="w-full p-0">
           <Command>
             <CommandInput
               placeholder="Start typing..."
               value={search}
               onValueChange={handleSearchValueChange}
+              onValueClear={() => {
+                onValueChange("");
+                setOpen(false);
+              }}
             />
             <CommandEmpty>No items found.</CommandEmpty>
             <CommandGroup>

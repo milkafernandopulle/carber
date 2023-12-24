@@ -14,7 +14,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { UserButton, useAuth } from "@clerk/nextjs";
+import { UserButton, useUser, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -23,6 +23,7 @@ export default function Header({ children: UserSignInBox }: HeaderProps) {
   const [open, setOpen] = useState(false);
 
   const auth = useAuth();
+  const user = useUser();
 
   return (
     <header className="sticky top-0 shadow bg-white z-10">
@@ -40,7 +41,7 @@ export default function Header({ children: UserSignInBox }: HeaderProps) {
                   <a className="opacity-60 hover:opacity-100" href="/search">
                     Search
                   </a>
-                  {auth.isSignedIn && (
+                  {auth.isSignedIn && user.user?.publicMetadata.role !== "admin" && (
                     <>
                       <span className="opacity-60">·</span>
                       <Link className="opacity-60 hover:opacity-100" href="/vehicles">

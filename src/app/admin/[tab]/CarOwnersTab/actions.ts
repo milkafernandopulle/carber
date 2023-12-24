@@ -24,7 +24,11 @@ export async function getUsers() {
       listedVehicleCounts.find((v) => v.ownerId === user.id)?._count?.ownerId || 0;
   });
 
-  return users.filter((user) => !!user.vehicleCount || user.publicMetadata?.role === "car-owner");
+  const result = users.filter(
+    (user) => !!user.vehicleCount || user.publicMetadata?.role === "car-owner"
+  );
+
+  return result;
 }
 
 export async function blockUser(userId: string, block: boolean) {

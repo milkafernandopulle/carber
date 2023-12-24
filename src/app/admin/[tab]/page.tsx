@@ -8,17 +8,38 @@ import BookingsTab from "./BookingsTab";
 import CarOwnersTab from "./CarOwnersTab";
 import DriversTab from "./DriversTab";
 import VehiclesTab from "./VehiclesTab";
+import { clerkClient } from "@clerk/nextjs/server";
+import { User } from "@clerk/nextjs/server";
 import Stats from "../Stats";
 import StatisticsTab from "./StatisticsTab";
+import { GiReceiveMoney } from "react-icons/gi";
+import RevenueTab from "./RevenueTab";
 
 async function getCarOwnerCount() {
-  const results = await prisma.vehicle.groupBy({
+  const users: (User & {
+    vehicleCount?: number;
+  })[] = await clerkClient.users.getUserList();
+
+  const listedVehicleCounts = await prisma.vehicle.groupBy({
     by: ["ownerId"],
     _count: {
       ownerId: true,
     },
+    where: {
+      ownerId: { in: users.map((user) => user.id) },
+    },
   });
-  return results.length;
+
+  users.forEach((user) => {
+    user.vehicleCount =
+      listedVehicleCounts.find((v) => v.ownerId === user.id)?._count?.ownerId || 0;
+  });
+
+  const result = users.filter(
+    (user) => !!user.vehicleCount || user.publicMetadata?.role === "car-owner"
+  );
+
+  return result.length;
 }
 
 async function getDriverCount() {
@@ -37,6 +58,12 @@ async function getTabs() {
       name: "Statistics",
       href: "statistics",
       icon: FaChartBar,
+      count: false,
+    },
+    {
+      name: "Revenue",
+      href: "revenue",
+      icon: GiReceiveMoney,
       count: false,
     },
     {
@@ -132,6 +159,7 @@ export default async function Page({ params: { tab: selectedTab } }: PageProps) 
                 {selectedTab === "vehicles" && <VehiclesTab />}
                 {selectedTab === "bookings" && <BookingsTab />}
                 {selectedTab === "statistics" && <StatisticsTab />}
+                {selectedTab === "revenue" && <RevenueTab />}
               </div>
             </div>
           </div>

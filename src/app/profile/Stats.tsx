@@ -6,6 +6,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+
+import { useDebounce } from "usehooks-ts";
 import { Vehicle, VehicleBooking } from "@prisma/client";
 import { format } from "date-fns";
 import Link from "next/link";
@@ -20,11 +22,14 @@ const Periods = ["Today", "Yesterday", "This Week", "This Month", "This Year", "
 type StatsProps = {};
 export default function Stats({}: StatsProps) {
   const [stats, setStats] = useState<number[]>();
+  const [loadingStats, setLoadingStats] = useState(0);
   const [selectedPeriod, setSelectedPeriod] = useState<(typeof Periods)[number]>("Today");
 
   useEffect(() => {
+    setLoadingStats((prev) => prev + 1);
     getStats(selectedPeriod).then((data) => {
       setStats(data);
+      setLoadingStats((prev) => prev - 1);
     });
   }, [selectedPeriod]);
 
@@ -79,7 +84,7 @@ export default function Stats({}: StatsProps) {
           {statsItems.map((item, index) => (
             <div
               key={item.id}
-              className="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
+              className="relative overflow-hidden rounded-lg bg-white px-4 pb-5 pt-5 shadow sm:px-6 sm:pt-6">
               <dt>
                 <div className="absolute rounded-md bg-indigo-500 p-3">
                   <item.icon className="h-6 w-6 text-white" aria-hidden="true" />
@@ -90,8 +95,10 @@ export default function Stats({}: StatsProps) {
                 </p>
               </dt>
               <dd className="ml-16 flex items-baseline pb-6 sm:pb-7">
-                <p className="text-2xl font-semibold text-gray-900">{item.stat(stats[index])}</p>
-                <div className="absolute inset-x-0 bottom-0 bg-gray-50 px-4 py-4 sm:px-6">
+                <p className="text-2xl font-semibold text-gray-900">
+                  {loadingStats ? "-" : item.stat(stats[index])}
+                </p>
+                {/* <div className="absolute inset-x-0 bottom-0 bg-gray-50 px-4 py-4 sm:px-6">
                   <div className="text-sm">
                     <Link
                       href="/vehicles"
@@ -99,7 +106,7 @@ export default function Stats({}: StatsProps) {
                       View all<span className="sr-only"> {item.name} stats</span>
                     </Link>
                   </div>
-                </div>
+                </div> */}
               </dd>
             </div>
           ))}

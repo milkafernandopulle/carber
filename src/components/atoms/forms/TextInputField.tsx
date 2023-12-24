@@ -27,6 +27,7 @@ type Props<FieldsType extends FieldValues> = FormInputControllerProps<FieldsType
   placeholder?: string;
   type?: string;
   disabled?: boolean;
+  maxLength?: number;
   inputProps?: Omit<
     React.ComponentProps<typeof Input>,
     "placeholder" | "label" | "value" | "onChangeText" | "onBlur" | "type"
@@ -40,6 +41,7 @@ const TextInputField = <FieldsType extends FieldValues>({
   type = "text",
   inputProps,
   disabled = false,
+  maxLength,
 }: Props<FieldsType>) => {
   const { control } = useFormContext();
 
@@ -70,6 +72,12 @@ const TextInputField = <FieldsType extends FieldValues>({
                     field.onChange(e);
                     return;
                   } else if (type === "number") {
+                    if (
+                      maxLength &&
+                      (value?.toString()?.length > maxLength || e.target.value.length >= maxLength)
+                    ) {
+                      return;
+                    }
                     let output = parseInt(e.target.value, 10);
                     output = isNaN(output) ? 0 : output;
                     field.onChange({
@@ -82,6 +90,7 @@ const TextInputField = <FieldsType extends FieldValues>({
                   }
                 }}
                 placeholder={placeholder}
+                maxLength={maxLength}
               />
             </FormControl>
             <FormMessage />

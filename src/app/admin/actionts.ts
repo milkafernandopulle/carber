@@ -48,8 +48,23 @@ export async function getStats(period: (typeof Periods)[number]) {
       break;
   }
 
-  const statsInfo = [
-    await prisma.vehicleBooking.count({
+  const statsInfo = await Promise.all([
+    new Promise<number>(async (resolve) => {
+      resolve(
+        (
+          await prisma.vehicleBooking.aggregate({
+            where: {
+              createdDate: {
+                gte: from,
+                lte: to,
+              },
+            },
+            _sum: { invoiceTotal: true },
+          })
+        )._sum.invoiceTotal || 0
+      );
+    }),
+    prisma.vehicle.count({
       where: {
         createdDate: {
           gte: from,
@@ -57,18 +72,7 @@ export async function getStats(period: (typeof Periods)[number]) {
         },
       },
     }),
-    (
-      await prisma.vehicleBooking.aggregate({
-        where: {
-          createdDate: {
-            gte: from,
-            lte: to,
-          },
-        },
-        _sum: { invoiceTotal: true },
-      })
-    )._sum.invoiceTotal || 0,
-    await prisma.vehicle.count({
+    prisma.vehicleBooking.count({
       where: {
         createdDate: {
           gte: from,
@@ -76,7 +80,7 @@ export async function getStats(period: (typeof Periods)[number]) {
         },
       },
     }),
-  ];
+  ]);
 
   return statsInfo;
 }

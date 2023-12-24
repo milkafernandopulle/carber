@@ -32,9 +32,14 @@ interface FormInputControllerProps<FieldsType extends FieldValues> {
 
 type Props<FieldsType extends FieldValues> = FormInputControllerProps<FieldsType> & {
   label?: string;
+  className?: string;
 };
 
-const PostcodeField = <FieldsType extends FieldValues>({ label, name }: Props<FieldsType>) => {
+const PostcodeField = <FieldsType extends FieldValues>({
+  label,
+  name,
+  className,
+}: Props<FieldsType>) => {
   const { control } = useFormContext();
 
   const { postcodeList, handleSearchChange } = usePostcodeSearch();
@@ -58,6 +63,7 @@ const PostcodeField = <FieldsType extends FieldValues>({ label, name }: Props<Fi
             <FormLabel className="block">{label}</FormLabel>
             <FormControl>
               <Combobox
+                className={className}
                 value={field.value}
                 onValueChange={handleValueChange(field)}
                 items={postcodeList}

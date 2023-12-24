@@ -51,7 +51,7 @@ const formSchema = z.object({
       message: "Allowed milage must be greater than 0KM",
     })
     .max(1000000, {
-      message: "Allowed milage must be less than 1000000KM",
+      message: "Allowed milage must be less than 1000000mi",
     }),
   images: z.array(z.string()).optional(),
   locationPostcode: z.string(),
@@ -120,6 +120,7 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                     name="model"
                     label="Model"
                     placeholder="Enter model"
+                    maxLength={10}
                   />
                 </div>
                 <div className="sm:col-span-3">
@@ -152,6 +153,7 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                     name="engine"
                     label="Engine Capacity(CC)"
                     placeholder="Enter engine capacity"
+                    maxLength={6}
                   />
                 </div>
                 <div className="sm:col-span-3">
@@ -166,14 +168,21 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                   <TextInputField name="color" label="Color" placeholder="Enter color" />
                 </div>
                 <div className="sm:col-span-3">
-                  <TextInputField type="number" name="year" label="Year" placeholder="Enter year" />
+                  <TextInputField
+                    type="number"
+                    name="year"
+                    label="Year"
+                    placeholder="Enter year"
+                    maxLength={4}
+                  />
                 </div>
                 <div className="sm:col-span-3">
                   <TextInputField
                     name="allowedMilage"
-                    label="Allowed Milage(KM)"
+                    label="Allowed Milage(miles)"
                     placeholder="Enter allowed milage"
                     type="number"
+                    maxLength={7}
                   />
                 </div>
                 <div className="sm:col-span-3">
@@ -182,6 +191,7 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                     label="Price Per Day (£)"
                     placeholder="Enter price per day for renting"
                     type="number"
+                    maxLength={4}
                   />
                 </div>
                 <div className="sm:col-span-6">
@@ -208,6 +218,7 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                     name="locationAddressLine1"
                     label="Address Line 1"
                     placeholder="Enter Address Line 1"
+                    maxLength={100}
                   />
                 </div>
                 <div className="sm:col-span-6">
@@ -215,6 +226,7 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                     name="locationAddressLine2"
                     label="Address Line 2 (Optional)"
                     placeholder="Enter Address Line 2"
+                    maxLength={100}
                   />
                 </div>
                 <div className="sm:col-span-3">

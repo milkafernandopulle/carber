@@ -12,6 +12,7 @@ import { FaCar, FaClipboardList } from "react-icons/fa";
 import { GiReceiveMoney } from "react-icons/gi";
 import MessageBoard from "./MessageBoard";
 import Stats from "./Stats";
+import { cn } from "@/lib/utils";
 
 export type OwnerProfileProps = {
   statsInfo: {
@@ -36,6 +37,7 @@ export default function OwnerProfile({
         <h3 className="text-base font-semibold leading-6 text-gray-900 my-6">Latest Bookings</h3>
 
         <div className="border-b border-t border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border">
+          {latestBookings.length === 0 && <p className="px-5 py-5">No bookings yet</p>}
           <ul role="list" className="divide-y divide-gray-200">
             <Accordion type="single" collapsible>
               {latestBookings.map((booking) => (
@@ -103,7 +105,16 @@ export default function OwnerProfile({
               href={`/vehicles/${vehicle.id}`}
               key={vehicle.id}
               className="space-y-3 p-3 border-b border-t border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border block">
-              <img src={vehicle.images?.[0]} alt="" className="aspect-square  rounded-sm w-fit" />
+              <div className="aspect-[4/3]">
+                <img
+                  src={vehicle.images?.[0] || "/images/vehicle-placeholder.avif"}
+                  alt=""
+                  className={cn(
+                    "aspect-[4/3]  rounded-sm w-fit",
+                    !!vehicle.images?.[0] ? "object-cover" : "object-contain"
+                  )}
+                />
+              </div>
               <div>
                 <h4 className="">
                   {vehicle.make} {vehicle.model} {vehicle.year}
