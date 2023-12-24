@@ -190,7 +190,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <>
-      <div className="mx-auto max-w-6xl py-32 sm:py-2 lg:py-2 -mt-12 h-[calc(100vh_-_64px)]">
+      <div className="mx-auto max-w-6xl sm:py-2 lg:py-2 -mt-12 md:h-[calc(100vh_-_64px)]">
         <SearchForm searchMetaData={searchMetaData} />
         <SearchResults results={results} />
       </div>

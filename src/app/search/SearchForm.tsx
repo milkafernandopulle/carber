@@ -134,7 +134,8 @@ export default function SearchForm({ searchMetaData }: SearchFormProps) {
   return (
     <>
       <Form {...form}>
-        <Card>
+        <div className="mx-4 text-2xl font-semibold text-center my-4 md:hidden">Search</div>
+        <Card className="mx-4 md:mx-0">
           <CardContent className="py-6 px-6">
             <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 border-b border-black/10 pb-6">
               <div className="sm:col-span-1">

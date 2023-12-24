@@ -5,6 +5,7 @@ import * as changeCase from "change-case";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 const people = [
   {
@@ -109,17 +110,19 @@ export default async function Page({}: PageProps) {
         <div className="mx-auto max-w-2xl px-4 lg:max-w-4xl lg:px-0">
           <h1 className="flex justify-between text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
             <span>Vehicles</span>
-            <Link href="/list-new/intro" className={buttonVariants()}>
+            <Link href="/list-new/intro" className={cn(buttonVariants(), "")}>
               Add Vehicle
             </Link>
           </h1>
-          <p className="mt-2 text-sm text-gray-500">Manage your vehicles and view their status.</p>
+          <p className="mt-2 text-sm text-gray-500 w-48 md:w-full">
+            Manage your vehicles and view their status.
+          </p>
         </div>
       </div>
-      <div className="mx-auto max-w-2xl space-y-8 sm:px-4 lg:max-w-4xl lg:px-0 mb-12">
+      <div className="mx-auto max-w-2xl space-y-8 sm:px-4 lg:max-w-4xl lg:px-0 mb-96 md:mb-96">
         <ul
           role="list"
-          className="divide-y divide-gray-100 overflow-hidden bg-white shadow ring-1 ring-gray-900/5 sm:rounded-xl">
+          className="divide-y divide-gray-100 overflow-hidden bg-white shadow ring-1 ring-gray-900/5 sm:rounded-xl mx-4 md:mx-0">
           {vehicles.map((vehicle) => (
             <li
               key={vehicle.id}

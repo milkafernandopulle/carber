@@ -15,7 +15,7 @@ export default function ResultsGrid({ results }: ResultsGridProps) {
       {results.map((vehicle) => (
         <li
           key={vehicle.id}
-          className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
+          className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow mx-4 md:mx-0">
           <div className="flex w-full items-center justify-between space-x-6 p-6">
             <div className="flex-1 truncate">
               <div className="flex items-center space-x-3">

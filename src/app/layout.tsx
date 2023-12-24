@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header>
             <UserSignInBox />
           </Header>
-          <div className="mt-16">{children}</div>
+          <div className="mt-4 md:mt-16">{children}</div>
           <Footer />
         </body>
       </html>

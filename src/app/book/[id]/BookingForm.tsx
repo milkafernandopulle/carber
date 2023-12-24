@@ -59,7 +59,10 @@ const formSchema = z
     bookingUserDrivingLicensePhoto: z.array(z.string()),
     bookingUserEmergencyContactPhone: z.string(),
     bookingUserEmergencyContactName: z.string(),
-    PaymentCardNo: z.string().min(16, requiredMessage).max(16, requiredMessage),
+    PaymentCardNo: z
+      .number()
+      .min(1000_0000_0000_0000, requiredMessage)
+      .max(9999_9999_9999_9999, requiredMessage),
     PaymentCardName: z.string().min(1, requiredMessage).max(100, requiredMessage),
     PaymentCardExp: z
       .string()
@@ -143,7 +146,10 @@ function getDefaultValues() {
     ],
     bookingUserEmergencyContactPhone: faker.helpers.replaceSymbols("077#########"),
     bookingUserEmergencyContactName: faker.person.fullName(),
-    PaymentCardNo: faker.finance.creditCardNumber().replaceAll("-", ""),
+    PaymentCardNo: faker.datatype.number({
+      min: 1000_0000_0000_0000,
+      max: 9999_9999_9999_9999,
+    }),
     PaymentCardName: faker.person.fullName(),
     PaymentCardExp: `${faker.datatype
       .number({ min: 1, max: 12 })
@@ -187,7 +193,10 @@ export default function BookingForm({ vehicle, user, onSubmit }: BookingFormProp
   });
 
   const handleSubmit = form.handleSubmit((data) => {
-    onSubmit(data);
+    onSubmit({
+      ...data,
+      PaymentCardNo: data.PaymentCardNo.toString() as unknown as any,
+    });
   });
 
   const invoiceTotals = useInvoiceCalculations(form, vehicle.pricePerDay);

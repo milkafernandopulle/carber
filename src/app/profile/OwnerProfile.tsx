@@ -99,7 +99,7 @@ export default function OwnerProfile({
 
       <div className="mt-10">
         <h3 className="text-base font-semibold leading-6 text-gray-900 my-6">Latest Vehicles</h3>
-        <div className="grid gap-2 grid-cols-4 sm:grid-cols-3">
+        <div className="grid gap-2 grid-cols-2 sm:grid-cols-3">
           {latestVehicles.map((vehicle) => (
             <Link
               href={`/vehicles/${vehicle.id}`}
