@@ -35,7 +35,7 @@ export async function createBooking(values: FormSchema, vehicle: Vehicle) {
       invoiceTax: total.tax,
       invoiceTotal: total.total,
       vehicleId: vehicle.id,
-    },
+    } as any,
   });
 
   redirect(`/book/thankyou`);
