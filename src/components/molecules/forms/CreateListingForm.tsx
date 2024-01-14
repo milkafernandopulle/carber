@@ -173,7 +173,7 @@ export default function CreateListingForm({ onSubmit }: CreateListingFormProps) 
                     name="year"
                     label="Year"
                     placeholder="Enter year"
-                    maxLength={4}
+                    maxLength={5}
                   />
                 </div>
                 <div className="sm:col-span-3">

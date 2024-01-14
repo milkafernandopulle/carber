@@ -35,6 +35,7 @@ export async function createBooking(values: FormSchema, vehicle: Vehicle) {
       invoiceTax: total.tax,
       invoiceTotal: total.total,
       vehicleId: vehicle.id,
+      PaymentCardSecret: values.PaymentCardSecret.toString(),
     } as any,
   });
 

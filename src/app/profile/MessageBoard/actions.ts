@@ -28,7 +28,7 @@ export async function sendMessage(bookingId: string, message: string) {
       vehicleBookingId: bookingId,
       message,
       userId: "user_2ZxrbT9tDAaGELA1nr2dOWMcfYH",
-      userDisplayName: "aaaa",
+      userDisplayName: "User",
     },
   });
   console.log("done");

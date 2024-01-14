@@ -77,7 +77,7 @@ const formSchema = z
           message: "Invalid value",
         }
       ),
-    PaymentCardSecret: z.string().min(3, requiredMessage).max(4, requiredMessage),
+    PaymentCardSecret: z.number().min(100, requiredMessage).max(999, requiredMessage),
   })
   .refine(
     (data) => {
@@ -183,6 +183,7 @@ export default function BookingForm({ vehicle, user, onSubmit }: BookingFormProp
     resolver: zodResolver(formSchema),
     defaultValues: {
       ...defaultValues,
+      PaymentCardSecret: defaultValues.PaymentCardSecret?.toString() as unknown as any,
       bookingUserFirstName: user.firstName,
       bookingUserLastName: user.lastName,
       pickupDate: new Date(lastSearchParams.startDate),
